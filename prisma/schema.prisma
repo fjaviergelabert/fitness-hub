@@ -9,3 +9,33 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Exercise {
+  id          Int             @id @default(autoincrement())
+  name        String          @unique @db.VarChar(150)
+  description String?         @db.Text
+  mediaUrl    String?         @db.VarChar(255)
+  blocks      BlockExercise[]
+}
+
+model Block {
+  id          Int             @id @default(autoincrement())
+  name        String          @unique @db.VarChar(150)
+  description String?         @db.Text
+  exercises   BlockExercise[]
+}
+
+model BlockExercise {
+  id         Int          @id @default(autoincrement())
+  type       ExerciseType
+  exercise   Exercise     @relation(fields: [exerciseId], references: [id])
+  exerciseId Int
+  block      Block        @relation(fields: [blockId], references: [id])
+  blockId    Int
+}
+
+enum ExerciseType {
+  TIMER
+  COUNTDOWN
+  MAX_REPS
+}
