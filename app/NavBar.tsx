@@ -5,7 +5,7 @@ const linkStyle = "hover:text-red-400 transition-colors";
 
 export function NavBar() {
   return (
-    <nav className="flex space-x-6 border-b-2 h-14 items-center">
+    <nav className="flex space-x-6 border-b-2 h-14 items-center w-full">
       <Link href="/">
         <AppLogo />
       </Link>
