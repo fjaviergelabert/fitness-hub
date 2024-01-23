@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Theme appearance="light" accentColor="red">
-          <main className="flex min-h-screen flex-col items-center px-24">
+          <main className="flex min-h-screen flex-col px-24 space-y-4">
             <NavBar />
-            <section className="pt-4">{children}</section>
+            {children}
           </main>
         </Theme>
       </body>

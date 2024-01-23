@@ -1,3 +1,3 @@
 export default function Home() {
-  return <>Home Page Content</>;
+  return <section>Home Page Content</section>;
 }
