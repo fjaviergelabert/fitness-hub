@@ -1,13 +1,7 @@
 import prisma from "@/prisma/client";
+import { exerciseSchema } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-
-export const exerciseSchema = z.object({
-  name: z.string().min(3).max(150),
-  description: z.string().optional(),
-  mediaUrl: z.string().max(255).optional(),
-});
 
 export async function GET() {
   const exercises = await prisma.exercise.findMany();

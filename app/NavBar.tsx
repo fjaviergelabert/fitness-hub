@@ -17,7 +17,7 @@ export function NavBar() {
       </Link>
       <ul className="flex space-x-2">
         {links.map((link) => (
-          <li>
+          <li key={link.path}>
             <Link
               className={`${
                 path === link.path && "text-red-300"
