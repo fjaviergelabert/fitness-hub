@@ -1,7 +1,7 @@
 import { Exercise } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodSchema } from "zod";
-import { exerciseSchema } from "./app/api/exercises/route";
+import { exerciseSchema } from "./schemas/exercise";
 
 export const validateSchema =
   (schema: ZodSchema) =>
