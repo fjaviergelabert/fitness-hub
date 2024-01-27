@@ -1,33 +1,9 @@
-"use client";
-import { Exercise } from "@prisma/client";
-import { Table } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import prisma from "@/prisma/client";
+import ExerciseTable from "./ExerciseTable";
 
-function Exercises() {
-  const exercises = useQuery<Exercise[]>({
-    queryKey: ["exercises"],
-    queryFn: () => axios.get("/api/exercises").then((res) => res.data),
-  });
-  return (
-    <Table.Root>
-      <Table.Header>
-        <Table.Row>
-          <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Description</Table.ColumnHeaderCell>
-        </Table.Row>
-      </Table.Header>
-
-      <Table.Body>
-        {exercises.data?.map((exercise) => (
-          <Table.Row key={exercise.id}>
-            <Table.RowHeaderCell>{exercise.name}</Table.RowHeaderCell>
-            <Table.Cell>{exercise.description}</Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table.Root>
-  );
+async function Exercises() {
+  const exercises = await prisma.exercise.findMany();
+  return <ExerciseTable exercises={exercises} />;
 }
 
 export default Exercises;

@@ -3,6 +3,7 @@ import { DropdownMenu, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, forwardRef } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 import AppLogo from "./AppLogo";
 
 export function NavBar() {
@@ -15,7 +16,7 @@ export function NavBar() {
       </Link>
       <ul className="flex space-x-2">
         <li>
-          <MenuLink isActive={path === "/workouts"} href="/workouts">
+          <MenuLink isActive={path === "/workouts"} href="/workouts" hoverable>
             Workouts
           </MenuLink>
         </li>
@@ -31,11 +32,11 @@ export function NavBar() {
               </Text>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
-              <DropdownMenu.Item shortcut="⌘ V">
-                <Link href="/exercises">View</Link>
+              <DropdownMenu.Item>
+                <MenuLink href="/exercises">View</MenuLink>
               </DropdownMenu.Item>
-              <DropdownMenu.Item shortcut="⌘ C">
-                <Link href="/exercises/new">Create</Link>
+              <DropdownMenu.Item>
+                <MenuLink href="/exercises/new">Create</MenuLink>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
@@ -47,13 +48,14 @@ export function NavBar() {
 
 const MenuLink = forwardRef<
   HTMLButtonElement,
-  PropsWithChildren<{ href: string; isActive?: boolean }>
->(({ isActive = false, href, children }, ref) => {
+  PropsWithChildren<{ href: string; isActive?: boolean; hoverable?: boolean }>
+>(({ isActive = false, href, hoverable = false, children }, ref) => {
   return (
     <Link
-      className={`${
-        isActive && "text-red-300"
-      } hover:text-red-500 transition-colors`}
+      className={`
+        ${isActive && "text-red-300"}
+        ${hoverable && "hover:text-red-500 transition-colors"}
+      `}
       href={href}
     >
       {children}
