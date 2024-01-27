@@ -1,5 +1,6 @@
 import { Exercise } from "@prisma/client";
-import { Table } from "@radix-ui/themes";
+import { Button, Table } from "@radix-ui/themes";
+import Link from "next/link";
 
 function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
   return (
@@ -7,7 +8,9 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Description</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell colSpan={2}>
+            Description
+          </Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -16,6 +19,11 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
           <Table.Row key={exercise.id}>
             <Table.RowHeaderCell>{exercise.name}</Table.RowHeaderCell>
             <Table.Cell>{exercise.description}</Table.Cell>
+            <Table.Cell>
+              <Link href={"/exercises/" + exercise.id}>
+                <Button>Edit</Button>
+              </Link>
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
