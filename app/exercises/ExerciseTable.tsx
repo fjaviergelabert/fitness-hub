@@ -16,10 +16,10 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
 
       <Table.Body>
         {exercises.map((exercise) => (
-          <Table.Row key={exercise.id}>
+          <Table.Row className="hover:bg-slate-800" key={exercise.id}>
             <Table.RowHeaderCell>{exercise.name}</Table.RowHeaderCell>
             <Table.Cell>{exercise.description}</Table.Cell>
-            <Table.Cell>
+            <Table.Cell align="right">
               <Link href={"/exercises/" + exercise.id}>
                 <Button>Edit</Button>
               </Link>

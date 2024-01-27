@@ -2,15 +2,13 @@
 import { exerciseSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
-import { Button, Text, TextArea, TextField } from "@radix-ui/themes";
-import {
-  MutationFunction,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
+import { MutationFunction, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { CiCircleInfo } from "react-icons/ci";
 import { toast } from "react-toastify";
 
 export function ExerciseForm({
@@ -26,14 +24,31 @@ export function ExerciseForm({
     formState: { errors, isValid },
   } = useForm<Exercise>({
     resolver: zodResolver(exerciseSchema),
-    defaultValues: exercise || {},
+    defaultValues: exercise || {
+      id: 0,
+      name: "",
+      description: "",
+      mediaUrl: "",
+    },
   });
-  const exerciseCreate = useExerciseMutation(mutationFn);
+  const exerciseMutation = useExerciseMutation(mutationFn);
   return (
     <form
-      onSubmit={handleSubmit((formValues) => exerciseCreate.mutate(formValues))}
+      onSubmit={handleSubmit((formValues) => {
+        if (isValid) {
+          exerciseMutation.mutate(formValues);
+        }
+      })}
       className="flex flex-col gap-3 max-w-screen-lg"
     >
+      {!isValid && (
+        <Callout.Root color="crimson">
+          <Callout.Icon>
+            <CiCircleInfo />
+          </Callout.Icon>
+          <Callout.Text>The form is not valid.</Callout.Text>
+        </Callout.Root>
+      )}
       <fieldset className="max-w-sm">
         <Text as="label">
           Exercise Name
@@ -50,9 +65,9 @@ export function ExerciseForm({
           <Text color="crimson">{errors.description?.message}</Text>
         )}
       </fieldset>
-      <Button type="submit" disabled={exerciseCreate.isPending || !isValid}>
+      <Button type="submit" disabled={exerciseMutation.isPending}>
         CREATE
-        {exerciseCreate.isPending && (
+        {exerciseMutation.isPending && (
           <AiOutlineLoading className="animate-spin" />
         )}
       </Button>
@@ -61,7 +76,7 @@ export function ExerciseForm({
 }
 
 function useExerciseMutation(mutationFn: MutationFunction<any, Exercise>) {
-  const queryClient = useQueryClient();
+  const router = useRouter();
   return useMutation({
     mutationFn,
     onError: async (e: AxiosError<{ error: string }>) => {
@@ -77,7 +92,7 @@ function useExerciseMutation(mutationFn: MutationFunction<any, Exercise>) {
     },
     onSuccess: async () => {
       toast.success("TRRRRRansaction completed", { theme: "colored" });
-      queryClient.invalidateQueries({ queryKey: ["exercises"] });
+      router.push("/exercises");
     },
   });
 }
