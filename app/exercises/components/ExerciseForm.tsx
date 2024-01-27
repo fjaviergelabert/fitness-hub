@@ -21,7 +21,7 @@ export function ExerciseForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitted },
   } = useForm<Exercise>({
     resolver: zodResolver(exerciseSchema),
     defaultValues: exercise || {
@@ -41,7 +41,7 @@ export function ExerciseForm({
       })}
       className="flex flex-col gap-3 max-w-screen-lg"
     >
-      {!isValid && (
+      {isSubmitted && !isValid && (
         <Callout.Root color="crimson">
           <Callout.Icon>
             <CiCircleInfo />
