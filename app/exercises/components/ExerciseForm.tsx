@@ -4,12 +4,35 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
 import { MutationFunction, useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { CiCircleInfo } from "react-icons/ci";
 import { toast } from "react-toastify";
+
+export function EditForm(props: { exercise: Exercise }) {
+  return (
+    <ExerciseForm
+      mutationFn={(exercise: Exercise) => {
+        return axios
+          .put("/api/exercises/" + props.exercise.id, exercise)
+          .then((res) => res.data);
+      }}
+      {...props}
+    />
+  );
+}
+
+export function CreateForm() {
+  return (
+    <ExerciseForm
+      mutationFn={(exercise: Exercise) => {
+        return axios.post("/api/exercises", exercise).then((res) => res.data);
+      }}
+    />
+  );
+}
 
 export function ExerciseForm({
   exercise,
@@ -93,6 +116,7 @@ function useExerciseMutation(mutationFn: MutationFunction<any, Exercise>) {
     onSuccess: async () => {
       toast.success("TRRRRRansaction completed", { theme: "colored" });
       router.push("/exercises");
+      router.refresh();
     },
   });
 }
