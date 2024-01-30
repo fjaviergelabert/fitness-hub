@@ -1,6 +1,6 @@
 import { Heading } from "@radix-ui/themes";
 import "react-loading-skeleton/dist/skeleton.css";
-import { FormSkeleton } from "../components/FormSkeleton";
+import { FormSkeleton } from "../_components/FormSkeleton";
 
 export default function Loading() {
   return (

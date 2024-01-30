@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import { EditForm } from "../components/ExerciseForm";
+import { EditForm } from "../_components/ExerciseForm";
 
 export default async function EditExercise({
   params: { id },

@@ -1,5 +1,5 @@
 import { Heading } from "@radix-ui/themes";
-import { CreateForm } from "../components/ExerciseForm";
+import { CreateForm } from "../_components/ExerciseForm";
 
 export default async function NewExercise() {
   return (
