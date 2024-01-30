@@ -62,3 +62,5 @@ const MenuLink = forwardRef<
     </Link>
   );
 });
+
+MenuLink.displayName = "MenuLink";
