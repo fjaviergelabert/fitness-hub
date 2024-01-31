@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client";
-import { Card, Heading, Text } from "@radix-ui/themes";
+import { Button, Card, Heading, Text } from "@radix-ui/themes";
 import Link from "next/link";
 
 async function Workouts() {
@@ -8,7 +8,7 @@ async function Workouts() {
   });
 
   if (workouts.length === 0) {
-    return <p>No workouts found.</p>;
+    return <p>No workouts found</p>;
   }
 
   return (
@@ -16,6 +16,9 @@ async function Workouts() {
       <Heading as="h1" align={"center"}>
         Workouts
       </Heading>
+      <Button asChild>
+        <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
+      </Button>
       <section className="flex flex-col gap-3 items-center">
         {workouts.map((workout) => (
           <Card className="min-w-80 max-w-lg" key={workout.id} asChild>

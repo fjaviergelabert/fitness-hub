@@ -20,9 +20,9 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
             <Table.RowHeaderCell>{exercise.name}</Table.RowHeaderCell>
             <Table.Cell>{exercise.description}</Table.Cell>
             <Table.Cell align="right">
-              <Link href={"/exercises/" + exercise.id}>
-                <Button>Edit</Button>
-              </Link>
+              <Button asChild>
+                <Link href={"/exercises/" + exercise.id}>Edit</Link>
+              </Button>
             </Table.Cell>
           </Table.Row>
         ))}
