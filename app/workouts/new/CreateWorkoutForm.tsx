@@ -1,65 +1,107 @@
 "use client";
 
+import { Workout, workoutSchema } from "@/schemas/exercise";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
-import { Button, Card, Container, Flex, Heading, Text } from "@radix-ui/themes";
+import { Button, Heading, Text, TextArea, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ExerciseCard } from "./ExerciseCard";
 import { ExerciseMenu } from "./ExerciseMenu";
+import { RemoveExerciseButton } from "./RemoveExerciseButton";
 
 export function CreateWorkoutForm(props: { exercises: Exercise[] }) {
   const router = useRouter();
-  const [exercises, setExercises] = useState<Exercise[]>([]);
 
-  function onSelect(exercise: Exercise) {
-    setExercises([...exercises, exercise]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<Workout>({
+    resolver: zodResolver(workoutSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      exercises: [],
+    },
+  });
+  const formExercises = getValues("exercises");
+
+  function createWorkout(workout: Workout) {
+    axios.post("/api/workouts", workout).then((res) => res.data);
+    router.push("/workouts");
+    router.refresh();
   }
 
   return (
-    <>
-      <ExerciseMenu exercises={props.exercises} onSelect={onSelect} />
-      {exercises.length > 0 && (
-        <>
-          <Heading as="h3">Exercises: </Heading>
-          {exercises.map((exercise) => (
-            <Card className="min-w-80 max-w-lg" key={exercise.id}>
-              <Flex direction={"row"} gap="3" align="center">
-                <Container>
-                  <Text as="p" size="2" weight="bold">
-                    {exercise.name}
-                  </Text>
-                  {exercise.description && (
-                    <Text as="p" color="gray" size="2">
-                      {exercise.description}
-                    </Text>
-                  )}
-                </Container>
-                <Button
-                  onClick={() =>
-                    setExercises(exercises.filter((e) => e.id !== exercise.id))
-                  }
-                >
-                  X
-                </Button>
-              </Flex>
-            </Card>
-          ))}
-        </>
-      )}
-      <Button
-        onClick={() => {
-          axios
-            .post("/api/workouts", {
-              name: "Workout1" + Date.now().toString(),
-              exercises,
-            })
-            .then((res) => res.data);
-          router.push("/workouts");
-          router.refresh();
-        }}
-      >
-        Save
-      </Button>
-    </>
+    <form
+      className="flex flex-col gap-4"
+      onSubmit={handleSubmit((formValues) => {
+        if (isValid) {
+          createWorkout(formValues);
+        }
+      })}
+    >
+      <ExerciseMenu
+        exercises={props.exercises.filter(
+          (e) => !formExercises.some((fe) => fe.id === e.id)
+        )}
+        onSelect={(exercise) =>
+          setValue("exercises", [...formExercises, exercise], {
+            shouldValidate: true,
+          })
+        }
+      />
+
+      <fieldset className="max-w-sm">
+        <Text as="label">
+          Exercise Name
+          <TextField.Input {...register("name")} />
+        </Text>
+        {errors.name && <Text color="crimson">{errors.name?.message}</Text>}
+      </fieldset>
+      <fieldset>
+        <Text as="label">
+          Description
+          <TextArea {...register("description")} />
+        </Text>
+        {errors.description && (
+          <Text color="crimson">{errors.description?.message}</Text>
+        )}
+      </fieldset>
+
+      <fieldset className="flex flex-col gap-3">
+        <Heading as="h3">Exercises: </Heading>
+        {formExercises.map((exercise) => (
+          <ExerciseCard
+            key={exercise.id}
+            exercise={exercise}
+            onSelect={(type) => {
+              const newValue: any = formExercises.map((e) =>
+                e.id === exercise.id ? { ...e, type } : e
+              );
+              setValue("exercises", newValue);
+            }}
+            buttonsSection={
+              <RemoveExerciseButton
+                onClick={() => {
+                  const newValue: any = formExercises.filter((e) =>
+                    e.id ? e.id !== exercise.id : e.name !== exercise.name
+                  );
+                  setValue("exercises", newValue);
+                }}
+              />
+            }
+          />
+        ))}
+        {errors.exercises && (
+          <Text color="crimson">{errors.exercises?.message}</Text>
+        )}
+      </fieldset>
+      <Button type="submit">Save</Button>
+    </form>
   );
 }
