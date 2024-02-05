@@ -1,6 +1,6 @@
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
-import { CreateWorkoutForm } from "./CreateWorkoutForm";
+import { CreateWorkoutForm } from "../_components/WorkoutForm";
 
 const Page = async () => {
   const exercises = await prisma.exercise.findMany();

@@ -27,7 +27,7 @@ model Block {
 
 model BlockExercise {
   id         Int          @id @default(autoincrement())
-  type       ExerciseType?
+  type       ExerciseType @default(NONE)
   exercise   Exercise     @relation(fields: [exerciseId], references: [id])
   exerciseId Int
   block      Block        @relation(fields: [blockId], references: [id])
@@ -35,6 +35,7 @@ model BlockExercise {
 }
 
 enum ExerciseType {
+  NONE
   TIMER
   COUNTDOWN
   MAX_REPS

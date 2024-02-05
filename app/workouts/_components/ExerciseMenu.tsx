@@ -1,4 +1,5 @@
 "use client";
+import { WorkoutExercise } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import { Button, DropdownMenu } from "@radix-ui/themes";
 import { Fragment, PropsWithChildren } from "react";
@@ -8,7 +9,7 @@ import { ExerciseHoverCard } from "./ExerciseHoverCard";
 export const ExerciseMenu = (
   props: PropsWithChildren<{
     exercises: Exercise[];
-    onSelect: (exercise: Exercise) => void;
+    onSelect: (exercise: WorkoutExercise) => void;
   }>
 ) => {
   return (
@@ -25,7 +26,7 @@ export const ExerciseMenu = (
             index === 0 ? (
               <DropdownMenu.Item
                 key={exercise.id}
-                onClick={() => props.onSelect(exercise)}
+                onClick={() => props.onSelect({ ...exercise, type: "NONE" })}
               >
                 <ExerciseHoverCard exercise={exercise}>
                   {exercise.name}
@@ -34,7 +35,9 @@ export const ExerciseMenu = (
             ) : (
               <Fragment key={exercise.id}>
                 <DropdownMenu.Separator />
-                <DropdownMenu.Item onClick={() => props.onSelect(exercise)}>
+                <DropdownMenu.Item
+                  onClick={() => props.onSelect({ ...exercise, type: "NONE" })}
+                >
                   <ExerciseHoverCard exercise={exercise}>
                     {exercise.name}
                   </ExerciseHoverCard>

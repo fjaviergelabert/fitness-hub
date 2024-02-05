@@ -39,20 +39,16 @@ function TypeSelect({
   value,
   onSelect,
 }: {
-  value: ExerciseType | undefined;
+  value: ExerciseType;
   onSelect: (type: ExerciseType) => void;
 }) {
   const types = Object.values(ExerciseType);
   return (
-    <Select.Root value={value} defaultValue="NONE" onValueChange={onSelect}>
+    <Select.Root value={value} onValueChange={onSelect}>
       <Select.Trigger>
         <Button variant="soft">Exercise Type</Button>
       </Select.Trigger>
       <Select.Content>
-        <Select.Item value="NONE" disabled>
-          Exercise Type
-        </Select.Item>
-        <Select.Separator />
         {types.map((t) => (
           <Select.Item key={t} value={t}>
             {t}

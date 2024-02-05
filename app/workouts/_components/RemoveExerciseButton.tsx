@@ -4,7 +4,12 @@ import { ImCross } from "react-icons/im";
 
 export function RemoveExerciseButton({ onClick }: { onClick: () => any }) {
   return (
-    <Button onClick={onClick}>
+    <Button
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
       <ImCross size={"1rem"} />
     </Button>
   );

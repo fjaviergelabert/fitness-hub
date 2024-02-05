@@ -39,7 +39,7 @@ export function ExerciseForm({
   mutationFn,
 }: {
   exercise?: Exercise;
-  mutationFn: MutationFunction<any, Exercise>;
+  mutationFn: MutationFunction<Exercise, Exercise>;
 }) {
   const {
     register,

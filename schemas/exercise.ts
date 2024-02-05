@@ -9,10 +9,11 @@ export const exerciseSchema = z.object({
 
 export const workoutExerciseSchema = exerciseSchema.extend({
   id: z.number().optional().nullable(),
-  type: z.nativeEnum(ExerciseType).optional(),
+  type: z.nativeEnum(ExerciseType),
 });
 
 export const workoutSchema = z.object({
+  id: z.number().optional(),
   name: z.string().min(3).max(150),
   description: z.string().max(255).optional().nullable(),
   exercises: z.array(workoutExerciseSchema).nonempty({
