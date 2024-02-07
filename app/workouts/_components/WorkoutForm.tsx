@@ -1,33 +1,30 @@
 "use client";
 
+import { useMutation } from "@/app/hooks/useMutation";
 import { Workout, workoutSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Heading, Text, TextArea, TextField } from "@radix-ui/themes";
+import { MutationFunction } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { AiOutlineLoading } from "react-icons/ai";
 import { ExerciseMenu } from "./ExerciseMenu";
 import { WorkoutExercises } from "./WorkoutExercises";
 
 // TODO: Add loading states
 // TODO: Add skeletons
 
-// ! TODO: test "permanentRedirect"
 export function EditWorkoutForm(props: {
   workout: Workout;
   exercises: Exercise[];
 }) {
-  const router = useRouter();
-
   return (
     <WorkoutForm
       onSubmit={(workout: Workout) => {
-        axios
+        return axios
           .put("/api/workouts/" + props.workout.id, workout)
           .then((res) => res.data);
-        router.push("/workouts");
-        router.refresh();
       }}
       {...props}
     />
@@ -35,14 +32,10 @@ export function EditWorkoutForm(props: {
 }
 
 export function CreateWorkoutForm(props: { exercises: Exercise[] }) {
-  const router = useRouter();
-
   return (
     <WorkoutForm
       onSubmit={(workout: Workout) => {
-        axios.post("/api/workouts", workout).then((res) => res.data);
-        router.push("/workouts");
-        router.refresh();
+        return axios.post("/api/workouts", workout).then((res) => res.data);
       }}
       {...props}
     />
@@ -56,7 +49,7 @@ export function WorkoutForm({
 }: {
   workout?: Workout;
   exercises: Exercise[];
-  onSubmit: (formValues: Workout) => void;
+  onSubmit: MutationFunction<Workout, Workout>;
 }) {
   const form = useForm<Workout>({
     resolver: zodResolver(workoutSchema),
@@ -74,12 +67,14 @@ export function WorkoutForm({
     formState: { errors, isValid },
   } = form;
 
+  const workoutMutation = useMutation<Workout>(onSubmit, "/workouts");
+
   return (
     <form
       className="flex flex-col gap-4"
       onSubmit={handleSubmit((formValues) => {
         if (isValid) {
-          onSubmit(formValues);
+          workoutMutation.mutate(formValues);
         }
       })}
     >
@@ -128,8 +123,11 @@ export function WorkoutForm({
         )}
       </fieldset>
 
-      <Button type="submit" disabled={!isValid}>
-        Save
+      <Button type="submit" disabled={workoutMutation.isPending || !isValid}>
+        SAVE
+        {workoutMutation.isPending && (
+          <AiOutlineLoading className="animate-spin" />
+        )}
       </Button>
     </form>
   );

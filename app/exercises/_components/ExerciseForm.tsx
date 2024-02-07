@@ -1,20 +1,19 @@
 "use client";
+import { useMutation } from "@/app/hooks/useMutation";
 import { exerciseSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
-import { MutationFunction, useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { MutationFunction } from "@tanstack/react-query";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { CiCircleInfo } from "react-icons/ci";
-import { toast } from "react-toastify";
 
 export function EditForm(props: { exercise: Exercise }) {
   return (
     <ExerciseForm
-      mutationFn={(exercise: Exercise) => {
+      onSubmit={(exercise: Exercise) => {
         return axios
           .put("/api/exercises/" + props.exercise.id, exercise)
           .then((res) => res.data);
@@ -27,7 +26,7 @@ export function EditForm(props: { exercise: Exercise }) {
 export function CreateForm() {
   return (
     <ExerciseForm
-      mutationFn={(exercise: Exercise) => {
+      onSubmit={(exercise: Exercise) => {
         return axios.post("/api/exercises", exercise).then((res) => res.data);
       }}
     />
@@ -36,10 +35,10 @@ export function CreateForm() {
 
 export function ExerciseForm({
   exercise,
-  mutationFn,
+  onSubmit,
 }: {
   exercise?: Exercise;
-  mutationFn: MutationFunction<Exercise, Exercise>;
+  onSubmit: MutationFunction<Exercise, Exercise>;
 }) {
   const {
     register,
@@ -54,7 +53,7 @@ export function ExerciseForm({
       mediaUrl: "",
     },
   });
-  const exerciseMutation = useExerciseMutation(mutationFn);
+  const exerciseMutation = useMutation(onSubmit, "/exercises");
   return (
     <form
       onSubmit={handleSubmit((formValues) => {
@@ -89,34 +88,11 @@ export function ExerciseForm({
         )}
       </fieldset>
       <Button type="submit" disabled={exerciseMutation.isPending}>
-        CREATE
+        SAVE
         {exerciseMutation.isPending && (
           <AiOutlineLoading className="animate-spin" />
         )}
       </Button>
     </form>
   );
-}
-
-function useExerciseMutation(mutationFn: MutationFunction<any, Exercise>) {
-  const router = useRouter();
-  return useMutation({
-    mutationFn,
-    onError: async (e: AxiosError<{ error: string }>) => {
-      if ((e.status = 400)) {
-        toast.warning(e.response?.data.error, {
-          theme: "colored",
-        });
-      } else {
-        toast.error("An error ocurred.", {
-          theme: "colored",
-        });
-      }
-    },
-    onSuccess: async () => {
-      toast.success("TRRRRRansaction completed", { theme: "colored" });
-      router.push("/exercises");
-      router.refresh();
-    },
-  });
 }
