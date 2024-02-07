@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 export function useMutation<T>(
   mutationFn: MutationFunction<T, T>,
-  routeRedirect: string
+  routeRedirect = "/"
 ) {
   const router = useRouter();
   return useReactQueryMutation({

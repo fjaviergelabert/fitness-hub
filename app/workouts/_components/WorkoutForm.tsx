@@ -64,7 +64,7 @@ export function WorkoutForm({
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitted },
   } = form;
 
   const workoutMutation = useMutation<Workout>(onSubmit, "/workouts");
@@ -78,7 +78,7 @@ export function WorkoutForm({
         }
       })}
     >
-      {!isValid && (
+      {isSubmitted && !isValid && (
         <Heading
           size={"4"}
           align={"center"}
@@ -123,7 +123,7 @@ export function WorkoutForm({
         )}
       </fieldset>
 
-      <Button type="submit" disabled={workoutMutation.isPending || !isValid}>
+      <Button type="submit" disabled={workoutMutation.isPending}>
         SAVE
         {workoutMutation.isPending && (
           <AiOutlineLoading className="animate-spin" />

@@ -2,15 +2,10 @@
 import { Workout } from "@/schemas/exercise";
 import { UseFormReturn } from "react-hook-form";
 import { ExerciseCard } from "./ExerciseCard";
-import { RemoveExerciseButton } from "./RemoveExerciseButton";
+import { RemoveButton } from "./RemoveButton";
 
 export function WorkoutExercises({ form }: { form: UseFormReturn<Workout> }) {
-  const {
-    getValues,
-    setValue,
-    formState: { errors },
-  } = form;
-
+  const { getValues, setValue } = form;
   const exercises = getValues("exercises");
 
   if (exercises.length === 0) {
@@ -29,7 +24,7 @@ export function WorkoutExercises({ form }: { form: UseFormReturn<Workout> }) {
         setValue("exercises", newValue, { shouldValidate: true });
       }}
       buttonsSection={
-        <RemoveExerciseButton
+        <RemoveButton
           onClick={() => {
             // TODO: Fix type issue
             const newValue: any = exercises.filter((e) =>

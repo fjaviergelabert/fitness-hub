@@ -2,7 +2,7 @@
 import { Button } from "@radix-ui/themes";
 import { ImCross } from "react-icons/im";
 
-export function RemoveExerciseButton({ onClick }: { onClick: () => any }) {
+export function RemoveButton({ onClick }: { onClick: () => any }) {
   return (
     <Button
       onClick={(e) => {
