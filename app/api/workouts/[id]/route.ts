@@ -12,6 +12,21 @@ export async function GET(
   return NextResponse.json(workout);
 }
 
+export async function DELETE(
+  _request: NextRequest,
+  { params: { id } }: { params: { id: string } }
+) {
+  await prisma.$transaction([
+    prisma.blockExercise.deleteMany({
+      where: { blockId: Number(id) },
+    }),
+    prisma.block.delete({
+      where: { id: Number(id) },
+    }),
+  ]);
+  return NextResponse.json({});
+}
+
 export async function PUT(
   request: NextRequest,
   { params: { id } }: { params: { id: string } }
