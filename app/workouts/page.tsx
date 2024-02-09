@@ -22,7 +22,7 @@ async function Workouts() {
           <Heading as="h1" align={"center"}>
             Workouts
           </Heading>
-          <Button asChild>
+          <Button className="self-center" asChild>
             <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
           </Button>
           <section className="flex flex-col gap-3 items-center">

@@ -87,7 +87,11 @@ export function ExerciseForm({
           <Text color="crimson">{errors.description?.message}</Text>
         )}
       </fieldset>
-      <Button type="submit" disabled={exerciseMutation.isPending}>
+      <Button
+        className="self-end"
+        type="submit"
+        disabled={exerciseMutation.isPending}
+      >
         SAVE
         {exerciseMutation.isPending && (
           <AiOutlineLoading className="animate-spin" />

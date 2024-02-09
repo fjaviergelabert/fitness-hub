@@ -123,7 +123,11 @@ export function WorkoutForm({
         )}
       </fieldset>
 
-      <Button type="submit" disabled={workoutMutation.isPending}>
+      <Button
+        className="self-end"
+        type="submit"
+        disabled={workoutMutation.isPending}
+      >
         SAVE
         {workoutMutation.isPending && (
           <AiOutlineLoading className="animate-spin" />
