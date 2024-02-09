@@ -17,6 +17,16 @@ export async function DELETE(
   _request: NextRequest,
   { params: { id } }: { params: { id: string } }
 ) {
+  const workouts = await prisma.blockExercise.findMany({
+    where: { exerciseId: Number(id) },
+  });
+  if (workouts.length > 0) {
+    return NextResponse.json(
+      { error: "Exercise is being used in a workout." },
+      { status: 400 }
+    );
+  }
+
   await prisma.exercise.delete({
     where: { id: Number(id) },
   });
