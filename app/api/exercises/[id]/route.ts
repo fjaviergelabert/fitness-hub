@@ -13,6 +13,16 @@ export async function GET(
   return NextResponse.json(exercise);
 }
 
+export async function DELETE(
+  _request: NextRequest,
+  { params: { id } }: { params: { id: string } }
+) {
+  await prisma.exercise.delete({
+    where: { id: Number(id) },
+  });
+  return NextResponse.json({});
+}
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
