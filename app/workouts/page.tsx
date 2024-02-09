@@ -27,9 +27,15 @@ async function Workouts() {
           </Button>
           <section className="flex flex-col gap-3 items-center">
             {workouts.map((workout) => (
-              <Card className="min-w-80 max-w-lg" key={workout.id} asChild>
-                <Flex direction={"row"}>
-                  <Link href={`/workouts/${workout.id}`}>
+              <Card
+                className="min-w-80 max-w-lg hover:bg-orange-950"
+                key={workout.id}
+              >
+                <Flex direction={"row"} align={"center"} justify={"between"}>
+                  <Link
+                    className="flex-1 block"
+                    href={`/workouts/${workout.id}`}
+                  >
                     <Text as="p" size="2" weight="bold">
                       {workout.name}
                     </Text>
@@ -39,7 +45,9 @@ async function Workouts() {
                       </Text>
                     )}
                   </Link>
-                  <RemoveWorkoutButton workoutId={workout.id} />
+                  <Flex justify={"end"}>
+                    <RemoveWorkoutButton workoutId={workout.id} />
+                  </Flex>
                 </Flex>
               </Card>
             ))}

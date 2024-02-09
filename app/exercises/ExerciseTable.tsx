@@ -1,6 +1,7 @@
 import { Exercise } from "@prisma/client";
-import { Button, Table } from "@radix-ui/themes";
+import { Button, Flex, Table } from "@radix-ui/themes";
 import Link from "next/link";
+import { RemoveExerciseButton } from "./RemoveExerciseButton";
 
 function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
   return (
@@ -20,9 +21,12 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
             <Table.RowHeaderCell>{exercise.name}</Table.RowHeaderCell>
             <Table.Cell>{exercise.description}</Table.Cell>
             <Table.Cell align="right">
-              <Button asChild>
-                <Link href={"/exercises/" + exercise.id}>Edit</Link>
-              </Button>
+              <Flex justify={"end"} gap={"3"}>
+                <Button asChild>
+                  <Link href={"/exercises/" + exercise.id}>Edit</Link>
+                </Button>
+                <RemoveExerciseButton exerciseId={exercise.id} />
+              </Flex>
             </Table.Cell>
           </Table.Row>
         ))}
