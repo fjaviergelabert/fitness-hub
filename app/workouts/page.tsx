@@ -32,10 +32,7 @@ async function Workouts() {
                 key={workout.id}
               >
                 <Flex direction={"row"} align={"center"} justify={"between"}>
-                  <Link
-                    className="flex-1 block"
-                    href={`/workouts/${workout.id}`}
-                  >
+                  <Link className="flex-1" href={`/workouts/${workout.id}`}>
                     <Text as="p" size="2" weight="bold">
                       {workout.name}
                     </Text>
