@@ -9,17 +9,22 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell colSpan={2}>
+          <Table.ColumnHeaderCell className="hidden lg:table-cell" colSpan={2}>
             Description
           </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
       <Table.Body>
         {exercises.map((exercise) => (
           <Table.Row className="hover:bg-slate-800" key={exercise.id}>
-            <Table.RowHeaderCell>{exercise.name}</Table.RowHeaderCell>
-            <Table.Cell>{exercise.description}</Table.Cell>
+            <Table.RowHeaderCell className="truncate lg:table-cell">
+              {exercise.name}
+            </Table.RowHeaderCell>
+            <Table.Cell className="hidden lg:table-cell">
+              {exercise.description}
+            </Table.Cell>
             <Table.Cell align="right">
               <Flex justify={"end"} gap={"3"}>
                 <Button asChild>
