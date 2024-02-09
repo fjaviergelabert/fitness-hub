@@ -13,7 +13,13 @@ export function useMutation<T>(
 ) {
   const router = useRouter();
   return useReactQueryMutation({
-    mutationFn,
+    mutationFn: (args: any) =>
+      mutationFn(args).catch((e) => {
+        toast.error("An error ocurred.", {
+          theme: "colored",
+        });
+        throw e;
+      }),
     onError: async (e: AxiosError<{ error: string }>) => {
       if ((e.status = 400)) {
         toast.warning(e.response?.data.error, {
