@@ -25,8 +25,9 @@ export function WorkoutExercises({ form }: { form: UseFormReturn<Workout> }) {
       }}
       buttonsSection={
         <RemoveButton
-          onClick={() => {
+          onClick={(e) => {
             // TODO: Fix type issue
+            e.preventDefault();
             const newValue: any = exercises.filter((e) =>
               e.id ? e.id !== exercise.id : e.name !== exercise.name
             );
