@@ -27,7 +27,7 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
             </Table.Cell>
             <Table.Cell align="right">
               <Flex justify={"end"} gap={"3"}>
-                <Button asChild>
+                <Button variant="solid" color="blue" asChild>
                   <Link href={"/exercises/" + exercise.id}>Edit</Link>
                 </Button>
                 <RemoveExerciseButton exerciseId={exercise.id} />

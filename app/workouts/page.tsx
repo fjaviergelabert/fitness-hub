@@ -32,7 +32,10 @@ async function Workouts() {
                 key={workout.id}
               >
                 <Flex direction={"row"} align={"center"} justify={"between"}>
-                  <Link className="flex-1" href={`/workouts/${workout.id}`}>
+                  <Link
+                    className="flex-1"
+                    href={`/workouts/${workout.id}/play`}
+                  >
                     <Text as="p" size="2" weight="bold">
                       {workout.name}
                     </Text>
@@ -42,7 +45,10 @@ async function Workouts() {
                       </Text>
                     )}
                   </Link>
-                  <Flex justify={"end"}>
+                  <Flex justify={"end"} gap={"3"}>
+                    <Button variant="solid" color="blue" asChild>
+                      <Link href={`/workouts/${workout.id}`}>Edit</Link>
+                    </Button>
                     <RemoveWorkoutButton workoutId={workout.id} />
                   </Flex>
                 </Flex>
