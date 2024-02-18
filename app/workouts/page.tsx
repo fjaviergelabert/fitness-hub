@@ -34,7 +34,7 @@ async function Workouts() {
                 <Flex direction={"row"} align={"center"} justify={"between"}>
                   <Link
                     className="flex-1"
-                    href={`/workouts/${workout.id}/play`}
+                    href={`/workouts/${workout.id}/overview`}
                   >
                     <Text as="p" size="2" weight="bold">
                       {workout.name}
