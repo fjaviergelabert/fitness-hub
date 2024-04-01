@@ -1,11 +1,29 @@
 import prisma from "@/prisma/client";
+import { Prisma } from "@prisma/client";
 import { Button, Card, Flex, Heading, Text } from "@radix-ui/themes";
 import Link from "next/link";
+import { CloneWorkoutButton } from "./CloneWorkoutButton";
 import { RemoveWorkoutButton } from "./RemoveWorkoutButton";
+
+export type PrismaWorkout = Prisma.BlockGetPayload<{
+  include: {
+    exercises: {
+      include: {
+        exercise: true;
+      };
+    };
+  };
+}>;
 
 async function Workouts() {
   const workouts = await prisma.block.findMany({
-    include: { exercises: true },
+    include: {
+      exercises: {
+        include: {
+          exercise: true,
+        },
+      },
+    },
   });
 
   return (
@@ -49,6 +67,7 @@ async function Workouts() {
                     <Button variant="solid" color="blue" asChild>
                       <Link href={`/workouts/${workout.id}`}>Edit</Link>
                     </Button>
+                    <CloneWorkoutButton workout={workout} />
                     <RemoveWorkoutButton workoutId={workout.id} />
                   </Flex>
                 </Flex>

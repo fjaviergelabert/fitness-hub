@@ -7,8 +7,6 @@ import Stopwatch from "./Stopwatch";
 // TODO: Create exerciseBlock reps and time fields (to replace TYPE? reps and time could coexist together)
 // ? TODO:      To use just description for now?????????????
 
-// ! TODO Cache the stopwatch component to render only once per workout, and revalidate on /start path level change
-
 const Layout = async ({
   params: { id },
   children,
