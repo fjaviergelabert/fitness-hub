@@ -67,7 +67,7 @@ async function Workouts() {
                     <Button variant="solid" color="blue" asChild>
                       <Link href={`/workouts/${workout.id}`}>Edit</Link>
                     </Button>
-                    <CloneWorkoutButton workout={workout} />
+                    <CloneWorkoutButton workoutId={workout.id} />
                     <RemoveWorkoutButton workoutId={workout.id} />
                   </Flex>
                 </Flex>
