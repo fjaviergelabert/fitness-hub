@@ -12,9 +12,9 @@ export function WorkoutExercises({ form }: { form: UseFormReturn<Workout> }) {
     return null;
   }
 
-  return exercises.map((exercise) => (
+  return exercises.map((exercise, index) => (
     <ExerciseCard
-      key={exercise.id}
+      key={exercise.id === 0 ? index : exercise.id}
       exercise={exercise}
       onSelect={(type) => {
         // TODO: Fix type issue

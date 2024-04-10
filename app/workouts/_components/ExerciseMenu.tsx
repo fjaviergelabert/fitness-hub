@@ -13,40 +13,38 @@ export const ExerciseMenu = (
   }>
 ) => {
   return (
-    <div>
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <Button variant="soft">
-            Add exercise
-            <FaCaretDown />
-          </Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          {props.exercises.map((exercise, index) =>
-            index === 0 ? (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Button variant="soft">
+          Add exercise
+          <FaCaretDown />
+        </Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        {props.exercises.map((exercise, index) =>
+          index === 0 ? (
+            <DropdownMenu.Item
+              key={exercise.id}
+              onClick={() => props.onSelect({ ...exercise, type: "NONE" })}
+            >
+              <ExerciseHoverCard exercise={exercise}>
+                {exercise.name}
+              </ExerciseHoverCard>
+            </DropdownMenu.Item>
+          ) : (
+            <Fragment key={exercise.id}>
+              <DropdownMenu.Separator />
               <DropdownMenu.Item
-                key={exercise.id}
                 onClick={() => props.onSelect({ ...exercise, type: "NONE" })}
               >
                 <ExerciseHoverCard exercise={exercise}>
                   {exercise.name}
                 </ExerciseHoverCard>
               </DropdownMenu.Item>
-            ) : (
-              <Fragment key={exercise.id}>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item
-                  onClick={() => props.onSelect({ ...exercise, type: "NONE" })}
-                >
-                  <ExerciseHoverCard exercise={exercise}>
-                    {exercise.name}
-                  </ExerciseHoverCard>
-                </DropdownMenu.Item>
-              </Fragment>
-            )
-          )}
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
-    </div>
+            </Fragment>
+          )
+        )}
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   );
 };

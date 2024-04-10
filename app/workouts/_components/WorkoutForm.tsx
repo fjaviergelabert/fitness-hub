@@ -1,14 +1,22 @@
 "use client";
 
 import { useMutation } from "@/app/hooks/useMutation";
-import { Workout, workoutSchema } from "@/schemas/exercise";
+import { Workout, WorkoutExercise, workoutSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
-import { Button, Heading, Text, TextArea, TextField } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  TextArea,
+  TextField,
+} from "@radix-ui/themes";
 import { MutationFunction } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { ExerciseDialog } from "./ExerciseDialog";
 import { ExerciseMenu } from "./ExerciseMenu";
 import { WorkoutExercises } from "./WorkoutExercises";
 
@@ -69,6 +77,11 @@ export function WorkoutForm({
 
   const workoutMutation = useMutation<Workout>(onSubmit, "/workouts");
 
+  const addExercise = (exercise: WorkoutExercise) =>
+    setValue("exercises", [...getValues("exercises"), exercise], {
+      shouldValidate: true,
+    });
+
   return (
     <form
       className="flex flex-col gap-4"
@@ -86,16 +99,15 @@ export function WorkoutForm({
         >{`Errors found`}</Heading>
       )}
 
-      <ExerciseMenu
-        exercises={exercises.filter(
-          (e) => !getValues("exercises").some((fe) => fe.id === e.id)
-        )}
-        onSelect={(exercise) =>
-          setValue("exercises", [...getValues("exercises"), exercise], {
-            shouldValidate: true,
-          })
-        }
-      />
+      <Box>
+        <ExerciseDialog onSubmit={addExercise} />
+        <ExerciseMenu
+          exercises={exercises.filter(
+            (e) => !getValues("exercises").some((fe) => fe.id === e.id)
+          )}
+          onSelect={addExercise}
+        />
+      </Box>
 
       <fieldset className="max-w-sm">
         <Text as="label">
