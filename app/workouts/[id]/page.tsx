@@ -39,7 +39,7 @@ export default async function EditWorkout({
 
   return (
     <>
-      <Heading as="h1">Edit workout</Heading>
+      <Heading as="h1">Workout</Heading>
       <EditWorkoutForm workout={workout} exercises={exercises} />
     </>
   );
