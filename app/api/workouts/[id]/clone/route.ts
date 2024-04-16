@@ -27,6 +27,7 @@ export async function GET(
       exercises: {
         create: workout.exercises.map((exercise) => ({
           type: exercise.type,
+          orderId: exercise.orderId,
           exercise: {
             connectOrCreate: {
               create: {

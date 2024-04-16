@@ -28,6 +28,7 @@ model Block {
 model BlockExercise {
   id         Int          @id @default(autoincrement())
   type       ExerciseType @default(NONE)
+  orderId    Int @default(0)
   exercise   Exercise     @relation(fields: [exerciseId], references: [id])
   exerciseId Int
   block      Block        @relation(fields: [blockId], references: [id])

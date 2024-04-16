@@ -13,6 +13,9 @@ export default async function EditWorkout({
     where: { id: Number(id) },
     include: {
       exercises: {
+        orderBy: {
+          orderId: "asc",
+        },
         include: {
           exercise: true,
         },
@@ -33,6 +36,7 @@ export default async function EditWorkout({
     ...dbWorkout,
     exercises: dbWorkout.exercises.map((e) => ({
       type: e.type,
+      orderId: e.orderId,
       ...e.exercise,
     })),
   };

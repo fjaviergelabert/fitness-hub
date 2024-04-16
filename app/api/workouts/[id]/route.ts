@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
 import { Workout, workoutSchema } from "@/schemas/exercise";
 import { NextRequest, NextResponse } from "next/server";
+import { flattenExercise } from "../../helpers";
 
 export async function GET(
   _request: NextRequest,
@@ -8,8 +9,26 @@ export async function GET(
 ) {
   const workout = await prisma.block.findUnique({
     where: { id: Number(id) },
+    include: {
+      exercises: {
+        orderBy: {
+          orderId: "asc",
+        },
+        include: {
+          exercise: true,
+        },
+      },
+    },
   });
-  return NextResponse.json(workout);
+
+  if (!workout) {
+    return NextResponse.json({ error: "Workout not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({
+    ...workout,
+    exercises: workout.exercises.map(flattenExercise),
+  });
 }
 
 export async function DELETE(
@@ -84,6 +103,7 @@ export async function PUT(
       exercises: {
         create: body.exercises.map((exercise) => ({
           type: exercise.type,
+          orderId: exercise.orderId,
           exercise: {
             connectOrCreate: {
               create: {

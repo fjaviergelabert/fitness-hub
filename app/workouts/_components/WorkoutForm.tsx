@@ -76,11 +76,19 @@ export function WorkoutForm({
   } = form;
 
   const workoutMutation = useMutation<Workout>(onSubmit, "/workouts");
+  const workoutExercises = getValues("exercises");
 
   const addExercise = (exercise: WorkoutExercise) =>
-    setValue("exercises", [...getValues("exercises"), exercise], {
-      shouldValidate: true,
-    });
+    setValue(
+      "exercises",
+      [
+        ...workoutExercises,
+        { ...exercise, orderId: workoutExercises.length + 1 },
+      ],
+      {
+        shouldValidate: true,
+      }
+    );
 
   return (
     <form
@@ -101,17 +109,12 @@ export function WorkoutForm({
 
       <Box>
         <ExerciseDialog onSubmit={addExercise} />
-        <ExerciseMenu
-          exercises={exercises.filter(
-            (e) => !getValues("exercises").some((fe) => fe.id === e.id)
-          )}
-          onSelect={addExercise}
-        />
+        <ExerciseMenu exercises={exercises} onSelect={addExercise} />
       </Box>
 
       <fieldset className="max-w-sm">
         <Text as="label">
-          Exercise Name
+          Workout Name
           <TextField.Input {...register("name")} />
         </Text>
         {errors.name && <Text color="crimson">{errors.name?.message}</Text>}

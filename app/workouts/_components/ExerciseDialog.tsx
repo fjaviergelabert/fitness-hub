@@ -12,6 +12,7 @@ export const ExerciseDialog = ({
   onSubmit: (exercise: WorkoutExercise) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const form = useFormContext<Exercise>();
 
   // TODO: Figure out form state type
   const submit = (exercise: FieldValues) => {
@@ -30,37 +31,32 @@ export const ExerciseDialog = ({
         <AlertDialog.Title>Create new Exercise</AlertDialog.Title>
         <ExerciseForm
           onSubmit={submit}
-          buttonSection={<ButtonSection submit={submit} />}
+          buttonSection={
+            <Flex gap="3" mt="4" justify="end">
+              <AlertDialog.Cancel>
+                <Button
+                  variant="soft"
+                  color="gray"
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </AlertDialog.Cancel>
+              <AlertDialog.Action>
+                <Button
+                  variant="solid"
+                  color="green"
+                  onClick={async (e) => {
+                    form.handleSubmit(submit)();
+                  }}
+                >
+                  Save
+                </Button>
+              </AlertDialog.Action>
+            </Flex>
+          }
         />
       </AlertDialog.Content>
     </AlertDialog.Root>
   );
 };
-
-function ButtonSection({
-  submit,
-}: {
-  submit: (exercise: FieldValues) => void;
-}) {
-  const form = useFormContext<Exercise>();
-  return (
-    <Flex gap="3" mt="4" justify="end">
-      <AlertDialog.Cancel>
-        <Button variant="soft" color="gray">
-          Cancel
-        </Button>
-      </AlertDialog.Cancel>
-      <AlertDialog.Action>
-        <Button
-          variant="solid"
-          color="green"
-          onClick={async (e) => {
-            form.handleSubmit(submit)();
-          }}
-        >
-          Save
-        </Button>
-      </AlertDialog.Action>
-    </Flex>
-  );
-}

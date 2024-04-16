@@ -14,7 +14,7 @@ export function ExerciseCard({
   onSelect: (type: ExerciseType) => void;
 }) {
   return (
-    <Card className="min-w-80 max-w-lg" key={exercise.id}>
+    <Card className="flex-auto min-w-80 max-w-lg" key={exercise.id}>
       <Flex direction={"row"} gap="3">
         <Container>
           <Text as="p" size="2" weight="bold">

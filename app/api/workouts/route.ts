@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
       exercises: {
         create: body.exercises.map((exercise) => ({
           type: exercise.type,
+          orderId: exercise.orderId,
           exercise: {
             connectOrCreate: {
               create: {
