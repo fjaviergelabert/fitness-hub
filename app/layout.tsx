@@ -1,4 +1,4 @@
-import { Theme } from "@radix-ui/themes";
+import { Container, Section, Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -23,10 +23,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <ReactQueryProvider>
           <Theme appearance="dark" accentColor="red">
-            <main className="flex min-h-screen flex-col px-24 space-y-4">
-              <NavBar />
-              {children}
-              <ToastContainer />
+            <main>
+              <Container>
+                <NavBar />
+                <Section>{children}</Section>
+                <ToastContainer />
+              </Container>
             </main>
           </Theme>
         </ReactQueryProvider>

@@ -1,5 +1,5 @@
 "use client";
-import { ExerciseForm } from "@/app/exercises/_components/ExerciseForm";
+import { ExerciseForm } from "@/app/components/ExerciseForm";
 import { WorkoutExercise } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";

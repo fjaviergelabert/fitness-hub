@@ -1,7 +1,7 @@
 "use client";
 import { ExerciseType } from ".prisma/client";
 import { WorkoutExercise } from "@/schemas/exercise";
-import { Button, Card, Container, Flex, Select, Text } from "@radix-ui/themes";
+import { Box, Card, Flex, Select, Text } from "@radix-ui/themes";
 import { ReactNode } from "react";
 
 export function ExerciseCard({
@@ -14,9 +14,9 @@ export function ExerciseCard({
   onSelect: (type: ExerciseType) => void;
 }) {
   return (
-    <Card className="flex-auto min-w-80 max-w-lg" key={exercise.id}>
-      <Flex direction={"row"} gap="3">
-        <Container>
+    <Card className="flex-auto max-w-lg" key={exercise.id}>
+      <Flex justify={"between"} direction={"row"} gap="3">
+        <Box>
           <Text as="p" size="2" weight="bold">
             {exercise.name}
           </Text>
@@ -25,7 +25,7 @@ export function ExerciseCard({
               {exercise.description}
             </Text>
           )}
-        </Container>
+        </Box>
         <Flex gap="3" align={"center"}>
           <TypeSelect value={exercise.type} onSelect={onSelect} />
           {buttonsSection}
@@ -45,9 +45,7 @@ function TypeSelect({
   const types = Object.values(ExerciseType);
   return (
     <Select.Root value={value} onValueChange={onSelect}>
-      <Select.Trigger>
-        <Button variant="soft">Exercise Type</Button>
-      </Select.Trigger>
+      <Select.Trigger />
       <Select.Content>
         {types.map((t) => (
           <Select.Item key={t} value={t}>

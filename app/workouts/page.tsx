@@ -45,17 +45,19 @@ async function Workouts() {
         </>
       ) : (
         <>
-          <Heading as="h1" align={"center"}>
-            Workouts
-          </Heading>
-          <Button className="self-center" asChild>
-            <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
-          </Button>
+          <Flex align={"center"} direction={"column"} gap={"3"} asChild>
+            <Heading as="h1">
+              Workouts
+              <Button asChild>
+                <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
+              </Button>
+            </Heading>
+          </Flex>
           <Flex direction={"column"} align={"center"} gap={"3"} asChild>
             <Section>
               {workouts.map((workout) => (
                 <Box
-                  className="hover:bg-orange-950 pointer-events-none lg:w-3/6"
+                  className="hover:bg-orange-950 pointer-events-none min-w-96 w-3/6"
                   asChild
                 >
                   <Card size={"3"} key={workout.id}>
@@ -83,7 +85,7 @@ async function Workouts() {
                         )}
                       </Link>
                       <Flex
-                        className="*:pointer-events-auto"
+                        className="pointer-events-auto"
                         justify={"end"}
                         gap={"3"}
                       >

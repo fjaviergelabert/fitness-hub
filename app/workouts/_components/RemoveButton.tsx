@@ -11,10 +11,8 @@ export function RemoveButton({
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
-        <Button asChild>
-          <span className="cursor-pointer">
-            <ImCross size={"1rem"} />
-          </span>
+        <Button>
+          <ImCross size={"1rem"} />
         </Button>
       </AlertDialog.Trigger>
       <AlertDialog.Content style={{ maxWidth: 450 }}>

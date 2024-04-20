@@ -115,7 +115,7 @@ export function WorkoutForm({
       <fieldset className="max-w-sm">
         <Text as="label">
           Workout Name
-          <TextField.Input {...register("name")} />
+          <TextField.Root {...register("name")} />
         </Text>
         {errors.name && <Text color="crimson">{errors.name?.message}</Text>}
       </fieldset>
