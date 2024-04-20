@@ -1,6 +1,5 @@
-import prisma from "@/prisma/client";
+import { getWorkout } from "@/prisma/queries";
 import { Box, Button, Flex, Section } from "@radix-ui/themes";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -10,18 +9,7 @@ type Props = {
 
 const Page = async ({ params: { id, exerciseIndex } }: Props) => {
   const index = Number(exerciseIndex);
-  const workout = await prisma.block.findUnique({
-    where: { id: Number(id) },
-    include: {
-      exercises: {
-        include: {
-          exercise: true,
-        },
-      },
-    },
-  });
-  const url = headers().get("referer");
-  const path = url?.replace(/\/exercises\/\d+/, "/exercises");
+  const workout = await getWorkout(Number(id));
 
   if (!workout || index > workout.exercises.length) {
     notFound();

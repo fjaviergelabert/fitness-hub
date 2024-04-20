@@ -1,4 +1,5 @@
 import prisma from "@/prisma/client";
+import { getWorkout } from "@/prisma/queries";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { EditWorkoutForm } from "../_components/WorkoutForm";
@@ -9,19 +10,7 @@ export default async function EditWorkout({
   params: { id: string };
 }) {
   const exercises = await prisma.exercise.findMany();
-  const dbWorkout = await prisma.block.findUnique({
-    where: { id: Number(id) },
-    include: {
-      exercises: {
-        orderBy: {
-          orderId: "asc",
-        },
-        include: {
-          exercise: true,
-        },
-      },
-    },
-  });
+  const dbWorkout = await getWorkout(Number(id));
 
   if (!dbWorkout) {
     notFound();
