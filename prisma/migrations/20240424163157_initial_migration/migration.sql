@@ -22,7 +22,8 @@ CREATE TABLE `Block` (
 -- CreateTable
 CREATE TABLE `BlockExercise` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `type` ENUM('TIMER', 'COUNTDOWN', 'MAX_REPS') NOT NULL,
+    `type` ENUM('NONE', 'TIMER', 'COUNTDOWN', 'MAX_REPS') NOT NULL DEFAULT 'NONE',
+    `orderId` INTEGER NOT NULL DEFAULT 0,
     `exerciseId` INTEGER NOT NULL,
     `blockId` INTEGER NOT NULL,
 
