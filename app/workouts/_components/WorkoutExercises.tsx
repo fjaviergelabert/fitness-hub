@@ -1,7 +1,7 @@
 "use client";
 import { WorkoutExercise } from "@/schemas/exercise";
 import { ExerciseType } from "@prisma/client";
-import { Box, Button, Flex } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { ExerciseCard } from "./ExerciseCard";
 import { RemoveButton } from "./RemoveButton";
@@ -38,9 +38,19 @@ export function WorkoutExercises({
           />
         }
       />
-      <Flex className="invisible group-hover:visible" direction={"column"}>
-        {index > 0 && (
-          <Box>
+      {exercises.length > 1 && (
+        <Flex
+          className="invisible group-hover:visible"
+          direction={"column"}
+          justify={
+            index === 0
+              ? "end"
+              : index === exercises.length - 1
+              ? "start"
+              : "center"
+          }
+        >
+          {index > 0 && (
             <Button
               type="button"
               color="blue"
@@ -50,20 +60,20 @@ export function WorkoutExercises({
             >
               <SlArrowUp />
             </Button>
-          </Box>
-        )}
-        {index < exercises.length - 1 && (
-          <Button
-            type="button"
-            color="blue"
-            onClick={() => {
-              onIncrementOrder(exercise, index);
-            }}
-          >
-            <SlArrowDown />
-          </Button>
-        )}
-      </Flex>
+          )}
+          {index < exercises.length - 1 && (
+            <Button
+              type="button"
+              color="blue"
+              onClick={() => {
+                onIncrementOrder(exercise, index);
+              }}
+            >
+              <SlArrowDown />
+            </Button>
+          )}
+        </Flex>
+      )}
     </Flex>
   ));
 }
