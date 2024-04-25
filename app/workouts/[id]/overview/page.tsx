@@ -1,5 +1,15 @@
 import { getWorkout } from "@/prisma/queries";
-import { Button, Flex, Heading, Section } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Section,
+  Separator,
+  Text,
+} from "@radix-ui/themes";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -20,10 +30,56 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           </Link>
         </Button>
       </Flex>
-      <Section>{workout.description}</Section>
-      {workout.exercises.map((e) => {
-        return <div key={e.orderId}>{e.name}</div>;
-      })}
+      <Flex direction={"column"} width={{ sm: "70vh", lg: "100vh" }} asChild>
+        <Section
+          my={"-8"}
+          display={{ initial: "none", xs: "none", sm: "initial" }}
+        >
+          <Separator my="3" size="4" />
+          <Text as="p" my={"2"} size={"2"}>
+            {workout.description}
+          </Text>
+          <Separator my="3" size="4" />
+        </Section>
+      </Flex>
+      <Flex
+        gap={"3"}
+        direction={"column"}
+        py={{ initial: "6", xs: "6", sm: "0" }}
+      >
+        <Heading align={"center"} as="h2" size={"4"}>
+          Exercises
+        </Heading>
+        {workout.exercises.map((e) => {
+          return (
+            <Box key={e.orderId} asChild>
+              <Card>
+                <Flex gap="3" align="center">
+                  <Avatar
+                    size="3"
+                    src={e.mediaUrl!}
+                    radius="full"
+                    fallback="?"
+                  />
+                  <Flex
+                    direction={"column"}
+                    justify={"center"}
+                    flexGrow={"1"}
+                    width={{ initial: "100px", xs: "100px", sm: "200px" }}
+                  >
+                    <Text as="p" size="2" weight="bold">
+                      {e.name}
+                    </Text>
+                    <Text color="gray" as="p" size={"1"} truncate>
+                      {e.description}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Card>
+            </Box>
+          );
+        })}
+      </Flex>
     </Flex>
   );
 };
