@@ -11,7 +11,7 @@ export function RemoveButton({
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
-        <Button>
+        <Button type="button">
           <ImCross size={"1rem"} />
         </Button>
       </AlertDialog.Trigger>

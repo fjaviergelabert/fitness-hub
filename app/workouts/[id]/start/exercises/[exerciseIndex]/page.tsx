@@ -16,10 +16,10 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
   }
 
   return (
-    <Section>
-      <Flex direction={"column"} gap={"5"} align={"stretch"}>
-        <Box>{workout.exercises[index - 1].exercise.name}</Box>
-        <Flex justify={"between"}>
+    <Section asChild>
+      <Flex direction={"column"} gap={"5"} align={"center"}>
+        <Box>{workout.exercises[index - 1].name}</Box>
+        <Box>
           <Button disabled={index === 1} asChild>
             <Link
               href={`${index - 1}`}
@@ -40,7 +40,7 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
               {">"}
             </Link>
           </Button>
-        </Flex>
+        </Box>
         {index === workout.exercises.length && (
           <Button color="grass" asChild>
             <Link href={`/workouts`}>{"COMPLETE"}</Link>

@@ -1,11 +1,8 @@
 import prisma from "@/prisma/client";
-import { Flex, Heading, Section } from "@radix-ui/themes";
+import { Flex, Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { PropsWithChildren } from "react";
 import Stopwatch from "./Stopwatch";
-
-// TODO: Create exerciseBlock reps and time fields (to replace TYPE? reps and time could coexist together)
-// ? TODO:      To use just description for now?????????????
 
 const Layout = async ({
   params: { id },
@@ -27,17 +24,15 @@ const Layout = async ({
   }
 
   return (
-    <Section grow={"1"}>
-      <Flex grow={"1"} direction={"column"} align={"center"}>
-        <Flex direction={"column"} align={"center"} gap={"2"}>
-          <Heading as="h1">{workout.name}</Heading>
-          <Heading as="h2" color="amber">
-            <Stopwatch />
-          </Heading>
-        </Flex>
-        {children}
+    <Flex direction={"column"} align={"center"}>
+      <Flex direction={"column"} align={"center"} gap={"2"}>
+        <Heading as="h1">{workout.name}</Heading>
+        <Heading as="h2" color="amber">
+          <Stopwatch />
+        </Heading>
       </Flex>
-    </Section>
+      {children}
+    </Flex>
   );
 };
 

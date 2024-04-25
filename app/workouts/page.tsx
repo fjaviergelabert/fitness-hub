@@ -57,10 +57,11 @@ async function Workouts() {
             <Section>
               {workouts.map((workout) => (
                 <Box
+                  key={workout.id}
                   className="hover:bg-orange-950 pointer-events-none min-w-96 w-3/6"
                   asChild
                 >
-                  <Card size={"3"} key={workout.id}>
+                  <Card size={"3"}>
                     <Flex
                       direction={"row"}
                       align={"center"}

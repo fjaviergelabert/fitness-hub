@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client";
 
 export async function getWorkout(id: number) {
-  return await prisma.block.findUnique({
+  const dbWorkout = await prisma.block.findUnique({
     where: { id: id },
     include: {
       exercises: {
@@ -14,4 +14,17 @@ export async function getWorkout(id: number) {
       },
     },
   });
+
+  if (!dbWorkout) {
+    return null;
+  }
+
+  return {
+    ...dbWorkout,
+    exercises: dbWorkout.exercises.map((e) => ({
+      type: e.type,
+      orderId: e.orderId,
+      ...e.exercise,
+    })),
+  };
 }

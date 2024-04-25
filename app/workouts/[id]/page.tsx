@@ -10,25 +10,15 @@ export default async function EditWorkout({
   params: { id: string };
 }) {
   const exercises = await prisma.exercise.findMany();
-  const dbWorkout = await getWorkout(Number(id));
+  const workout = await getWorkout(Number(id));
 
-  if (!dbWorkout) {
+  if (!workout) {
     notFound();
   }
 
   if (exercises.length === 0) {
     return <p>No exercises found</p>;
   }
-
-  // TODO: Fix type prisma issue
-  const workout: any = {
-    ...dbWorkout,
-    exercises: dbWorkout.exercises.map((e) => ({
-      type: e.type,
-      orderId: e.orderId,
-      ...e.exercise,
-    })),
-  };
 
   return (
     <>

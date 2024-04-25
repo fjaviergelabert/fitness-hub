@@ -1,8 +1,8 @@
 "use client";
 
 import { useMutation } from "@/app/hooks/useMutation";
-import { Workout, WorkoutExercise, workoutSchema } from "@/schemas/exercise";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { getWorkout } from "@/prisma/queries";
+import { Workout } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import {
   Box,
@@ -14,8 +14,8 @@ import {
 } from "@radix-ui/themes";
 import { MutationFunction } from "@tanstack/react-query";
 import axios from "axios";
-import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
+import { useWorkoutForm } from "../_hooks/useWorkoutForm";
 import { ExerciseDialog } from "./ExerciseDialog";
 import { ExerciseMenu } from "./ExerciseMenu";
 import { WorkoutExercises } from "./WorkoutExercises";
@@ -24,7 +24,7 @@ import { WorkoutExercises } from "./WorkoutExercises";
 // TODO: Add skeletons
 
 export function EditWorkoutForm(props: {
-  workout: Workout;
+  workout: NonNullable<Awaited<ReturnType<typeof getWorkout>>>;
   exercises: Exercise[];
 }) {
   return (
@@ -55,40 +55,27 @@ export function WorkoutForm({
   exercises,
   onSubmit,
 }: {
-  workout?: Workout;
+  workout?: NonNullable<Awaited<ReturnType<typeof getWorkout>>>;
   exercises: Exercise[];
   onSubmit: MutationFunction<Workout, Workout>;
 }) {
-  const form = useForm<Workout>({
-    resolver: zodResolver(workoutSchema),
-    defaultValues: workout || {
-      name: "",
-      description: "",
-      exercises: [],
-    },
-  });
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors, isValid, isSubmitted },
-  } = form;
-
   const workoutMutation = useMutation<Workout>(onSubmit, "/workouts");
-  const workoutExercises = getValues("exercises");
 
-  const addExercise = (exercise: WorkoutExercise) =>
-    setValue(
-      "exercises",
-      [
-        ...workoutExercises,
-        { ...exercise, orderId: workoutExercises.length + 1 },
-      ],
-      {
-        shouldValidate: true,
-      }
-    );
+  const {
+    form: {
+      getValues,
+      register,
+      handleSubmit,
+      formState: { errors, isValid, isSubmitted },
+    },
+    actions: {
+      addExercise,
+      updateExerciseType,
+      removeExercise,
+      decrementOrder,
+      incrementOrder,
+    },
+  } = useWorkoutForm(workout);
 
   return (
     <form
@@ -132,7 +119,13 @@ export function WorkoutForm({
 
       <fieldset className="flex flex-col gap-3">
         <Heading as="h3">Exercises: </Heading>
-        <WorkoutExercises form={form} />
+        <WorkoutExercises
+          exercises={getValues("exercises")}
+          onTypeSelect={updateExerciseType}
+          onRemoveClick={removeExercise}
+          onDecrementOrder={decrementOrder}
+          onIncrementOrder={incrementOrder}
+        />
         {errors.exercises && (
           <Text color="crimson">{errors.exercises?.message}</Text>
         )}

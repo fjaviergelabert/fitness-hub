@@ -4,7 +4,7 @@ import { WorkoutExercise } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useState } from "react";
-import { FieldValues, useFormContext } from "react-hook-form";
+import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
 
 export const ExerciseDialog = ({
   onSubmit,
@@ -12,9 +12,7 @@ export const ExerciseDialog = ({
   onSubmit: (exercise: WorkoutExercise) => void;
 }) => {
   const [open, setOpen] = useState(false);
-  const form = useFormContext<Exercise>();
 
-  // TODO: Figure out form state type
   const submit = (exercise: FieldValues) => {
     onSubmit(exercise as WorkoutExercise);
     setOpen(false);
@@ -30,11 +28,12 @@ export const ExerciseDialog = ({
       <AlertDialog.Content style={{ maxWidth: 450 }}>
         <AlertDialog.Title>Create new Exercise</AlertDialog.Title>
         <ExerciseForm
-          onSubmit={submit}
+          onSubmit={() => {}}
           buttonSection={
             <Flex gap="3" mt="4" justify="end">
               <AlertDialog.Cancel>
                 <Button
+                  type="button"
                   variant="soft"
                   color="gray"
                   onClick={() => setOpen(false)}
@@ -43,20 +42,34 @@ export const ExerciseDialog = ({
                 </Button>
               </AlertDialog.Cancel>
               <AlertDialog.Action>
-                <Button
-                  variant="solid"
-                  color="green"
-                  onClick={async (e) => {
+                <SubmitButton
+                  onClick={(form) => {
                     form.handleSubmit(submit)();
                   }}
-                >
-                  Save
-                </Button>
+                />
               </AlertDialog.Action>
             </Flex>
           }
         />
       </AlertDialog.Content>
     </AlertDialog.Root>
+  );
+};
+
+const SubmitButton = (props: {
+  onClick: (form: UseFormReturn<Exercise>) => void;
+}) => {
+  const form = useFormContext<Exercise>();
+  return (
+    <Button
+      type="button"
+      variant="solid"
+      color="green"
+      onClick={() => {
+        props.onClick(form);
+      }}
+    >
+      Save
+    </Button>
   );
 };

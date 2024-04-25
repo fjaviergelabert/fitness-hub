@@ -22,7 +22,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       </Flex>
       <Section>{workout.description}</Section>
       {workout.exercises.map((e) => {
-        return <div key={e.id}>{e.exercise.name}</div>;
+        return <div key={e.orderId}>{e.name}</div>;
       })}
     </Flex>
   );
