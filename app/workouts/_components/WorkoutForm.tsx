@@ -87,17 +87,10 @@ export function WorkoutForm({
       })}
     >
       {isSubmitted && !isValid && (
-        <Heading
-          size={"4"}
-          align={"center"}
-          color="crimson"
-        >{`Errors found`}</Heading>
+        <Heading size={"4"} align={"center"} color="crimson">
+          Errors found
+        </Heading>
       )}
-
-      <Box>
-        <ExerciseDialog onSubmit={addExercise} />
-        <ExerciseMenu exercises={exercises} onSelect={addExercise} />
-      </Box>
 
       <fieldset className="max-w-sm">
         <Text as="label">
@@ -118,7 +111,13 @@ export function WorkoutForm({
       </fieldset>
 
       <fieldset className="flex flex-col gap-3">
-        <Heading as="h3">Exercises: </Heading>
+        <Heading as="h3">Exercises:</Heading>
+        <Box>
+          <ExerciseDialog onSubmit={addExercise} />
+          {exercises.length > 0 && (
+            <ExerciseMenu exercises={exercises} onSelect={addExercise} />
+          )}
+        </Box>
         <WorkoutExercises
           exercises={getValues("exercises")}
           onTypeSelect={updateExerciseType}
