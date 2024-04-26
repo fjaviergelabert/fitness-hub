@@ -31,10 +31,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         </Button>
       </Flex>
       <Flex direction={"column"} width={{ sm: "70vh", lg: "100vh" }} asChild>
-        <Section
-          my={"-8"}
-          display={{ initial: "none", xs: "none", sm: "initial" }}
-        >
+        <Section display={{ initial: "none", xs: "none", sm: "initial" }}>
           <Separator my="3" size="4" />
           <Text as="p" my={"2"} size={"2"}>
             {workout.description}
