@@ -30,20 +30,20 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
           </Link>
         </Button>
       </Flex>
-      <Flex direction={"column"} width={{ sm: "70vh", lg: "100vh" }} asChild>
-        <Section display={{ initial: "none", xs: "none", sm: "initial" }}>
-          <Separator my="3" size="4" />
-          <Text as="p" my={"2"} size={"2"}>
-            {workout.description}
-          </Text>
-          <Separator my="3" size="4" />
-        </Section>
-      </Flex>
-      <Flex
-        gap={"3"}
-        direction={"column"}
-        py={{ initial: "6", xs: "6", sm: "0" }}
-      >
+
+      {workout.description && (
+        <Flex direction={"column"} width={{ sm: "70vh", lg: "100vh" }} asChild>
+          <Section display={{ initial: "none", xs: "none", sm: "initial" }}>
+            <Separator my="3" size="4" />
+            <Text as="p" my={"2"} size={"2"}>
+              {workout.description}
+            </Text>
+            <Separator my="3" size="4" />
+          </Section>
+        </Flex>
+      )}
+
+      <Flex gap={"3"} direction={"column"} py={"6"}>
         <Heading align={"center"} as="h2" size={"4"}>
           Exercises
         </Heading>

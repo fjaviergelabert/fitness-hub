@@ -1,4 +1,3 @@
-import React from "react";
 import { FaPizzaSlice } from "react-icons/fa";
 
 function AppLogo() {

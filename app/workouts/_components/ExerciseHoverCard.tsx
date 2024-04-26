@@ -1,4 +1,5 @@
 "use client";
+import AppLogo from "@/app/AppLogo";
 import { Exercise } from "@prisma/client";
 import {
   Avatar,
@@ -24,15 +25,15 @@ export function ExerciseHoverCard({
         <Flex gap="4">
           <Avatar
             size="3"
-            fallback="R"
+            fallback={<AppLogo />}
             radius="full"
-            src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+            src={exercise.mediaUrl || ""}
           />
           <Box>
             <Heading size="3" as="h3">
               {exercise.name}
             </Heading>
-            <Text as="div" size="2" style={{ maxWidth: 300 }} mt="3">
+            <Text as="div" size="2">
               {exercise.description}
             </Text>
           </Box>

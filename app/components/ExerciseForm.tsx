@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
 import axios from "axios";
+import Link from "next/link";
 import { ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -109,6 +110,23 @@ export function ExerciseForm({
             <TextField.Root {...register("name")} />
           </Text>
           {errors.name && <Text color="crimson">{errors.name?.message}</Text>}
+        </fieldset>
+        <fieldset className="max-w-sm">
+          <Text as="label">
+            Image URL
+            <Link
+              className="text-red-300 hover:text-red-500"
+              href="https://unsplash.com/s/photos/fitness"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {' (Only "unsplash" available)'}
+            </Link>
+            <TextField.Root {...register("mediaUrl")} />
+          </Text>
+          {errors.mediaUrl && (
+            <Text color="crimson">{errors.mediaUrl?.message}</Text>
+          )}
         </fieldset>
         <fieldset>
           <Text as="label">
