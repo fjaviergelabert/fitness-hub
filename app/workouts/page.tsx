@@ -8,6 +8,7 @@ import {
   Heading,
   Section,
   Text,
+  Tooltip,
 } from "@radix-ui/themes";
 import Link from "next/link";
 import { CloneWorkoutButton } from "./CloneWorkoutButton";
@@ -58,7 +59,7 @@ async function Workouts() {
               {workouts.map((workout) => (
                 <Box
                   key={workout.id}
-                  className="hover:bg-orange-950 pointer-events-none min-w-96 w-3/6"
+                  className="hover:bg-orange-950 min-w-96 w-3/6"
                   asChild
                 >
                   <Card size={"3"}>
@@ -66,9 +67,10 @@ async function Workouts() {
                       direction={"row"}
                       align={"center"}
                       justify={"between"}
+                      gap={"2"}
                     >
                       <Link
-                        className="flex-1"
+                        className="min-w-0"
                         href={`/workouts/${workout.id}/overview`}
                       >
                         <Text
@@ -80,9 +82,11 @@ async function Workouts() {
                           {workout.name}
                         </Text>
                         {workout.description && (
-                          <Text as="p" color="gray" size="2">
-                            {workout.description}
-                          </Text>
+                          <Tooltip content={workout.description}>
+                            <Text as="p" color="gray" size="2" truncate>
+                              {workout.description}
+                            </Text>
+                          </Tooltip>
                         )}
                       </Link>
                       <Flex
