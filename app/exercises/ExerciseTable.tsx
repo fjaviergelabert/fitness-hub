@@ -1,6 +1,7 @@
 import { Exercise } from "@prisma/client";
 import { Button, Flex, Table } from "@radix-ui/themes";
 import Link from "next/link";
+import { Description } from "../components/Description";
 import { RemoveExerciseButton } from "./RemoveExerciseButton";
 
 function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
@@ -23,7 +24,7 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
               {exercise.name}
             </Table.RowHeaderCell>
             <Table.Cell className="hidden lg:table-cell">
-              {exercise.description}
+              <Description>{exercise.description}</Description>
             </Table.Cell>
             <Table.Cell align="right">
               <Flex justify={"end"} gap={"3"}>

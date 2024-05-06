@@ -8,9 +8,9 @@ import {
   Heading,
   Section,
   Text,
-  Tooltip,
 } from "@radix-ui/themes";
 import Link from "next/link";
+import { Description } from "../components/Description";
 import { CloneWorkoutButton } from "./CloneWorkoutButton";
 import { RemoveWorkoutButton } from "./RemoveWorkoutButton";
 
@@ -82,11 +82,7 @@ async function Workouts() {
                           {workout.name}
                         </Text>
                         {workout.description && (
-                          <Tooltip content={workout.description}>
-                            <Text as="p" color="gray" size="2" truncate>
-                              {workout.description}
-                            </Text>
-                          </Tooltip>
+                          <Description>{workout.description}</Description>
                         )}
                       </Link>
                       <Flex
