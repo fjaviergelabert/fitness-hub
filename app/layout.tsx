@@ -24,9 +24,9 @@ export default function RootLayout({
         <ReactQueryProvider>
           <Theme appearance="dark" accentColor="red">
             <main>
-              <Container>
+              <Container height={"100vh"}>
                 <NavBar />
-                <Section>{children}</Section>
+                <Section height={"100%"}>{children}</Section>
                 <ToastContainer />
               </Container>
             </main>
