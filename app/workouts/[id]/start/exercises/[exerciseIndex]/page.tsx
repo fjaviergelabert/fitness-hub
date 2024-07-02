@@ -1,5 +1,5 @@
+import { getWorkout } from "@/app/workouts/_actions/queries";
 import { ExerciseHoverCard } from "@/app/workouts/_components/ExerciseHoverCard";
-import { getWorkout } from "@/prisma/queries";
 import { Box, Button, Flex, Heading, Section } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,4 +1,4 @@
-import { getWorkout } from "@/prisma/queries";
+import { getWorkout } from "@/app/workouts/_actions/queries";
 import {
   Avatar,
   Box,

@@ -1,5 +1,5 @@
 "use client";
-import { getWorkout } from "@/prisma/queries";
+import { getWorkout } from "@/app/workouts/_actions/queries";
 import { Workout, WorkoutExercise, workoutSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise, ExerciseType } from "@prisma/client";

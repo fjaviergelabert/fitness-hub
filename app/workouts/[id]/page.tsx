@@ -1,5 +1,5 @@
+import { getWorkout } from "@/app/workouts/_actions/queries";
 import prisma from "@/prisma/client";
-import { getWorkout } from "@/prisma/queries";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { EditWorkoutForm } from "../_components/WorkoutForm";

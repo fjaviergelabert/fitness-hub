@@ -23,6 +23,8 @@ const Layout = async ({
     notFound();
   }
 
+  // Images container jumping between diffrent sized images
+
   return (
     <Flex direction={"column"} align={"center"}>
       <Flex direction={"column"} align={"center"} gap={"2"}>
