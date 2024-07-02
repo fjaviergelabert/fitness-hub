@@ -1,8 +1,8 @@
-import { getWorkout } from "@/app/workouts/_actions";
+import { getWorkout, updateWorkout } from "@/app/workouts/_actions";
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import { EditWorkoutForm } from "../_components/WorkoutForm";
+import { WorkoutForm } from "../_components/WorkoutForm";
 
 export default async function EditWorkout({
   params: { id },
@@ -23,7 +23,11 @@ export default async function EditWorkout({
   return (
     <>
       <Heading as="h1">Workout</Heading>
-      <EditWorkoutForm workout={workout} exercises={exercises} />
+      <WorkoutForm
+        workout={workout}
+        exercises={exercises}
+        onSubmit={updateWorkout}
+      />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
-import { CreateWorkoutForm } from "../_components/WorkoutForm";
+import { createWorkout } from "../_actions";
+import { WorkoutForm } from "../_components/WorkoutForm";
 
 const Page = async () => {
   const exercises = await prisma.exercise.findMany();
@@ -12,7 +13,7 @@ const Page = async () => {
   return (
     <>
       <Heading as="h1"> Create your own workout.</Heading>
-      <CreateWorkoutForm exercises={exercises} />
+      <WorkoutForm exercises={exercises} onSubmit={createWorkout} />
     </>
   );
 };

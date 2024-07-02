@@ -12,8 +12,6 @@ import {
   TextArea,
   TextField,
 } from "@radix-ui/themes";
-import { MutationFunction } from "@tanstack/react-query";
-import axios from "axios";
 import { AiOutlineLoading } from "react-icons/ai";
 import { useWorkoutForm } from "../_hooks/useWorkoutForm";
 import { ExerciseDialog } from "./ExerciseDialog";
@@ -23,33 +21,6 @@ import { WorkoutExercises } from "./WorkoutExercises";
 // TODO: Add loading states
 // TODO: Add skeletons
 
-export function EditWorkoutForm(props: {
-  workout: NonNullable<Awaited<ReturnType<typeof getWorkout>>>;
-  exercises: Exercise[];
-}) {
-  return (
-    <WorkoutForm
-      onSubmit={(workout: Workout) => {
-        return axios
-          .put("/api/workouts/" + props.workout.id, workout)
-          .then((res) => res.data);
-      }}
-      {...props}
-    />
-  );
-}
-
-export function CreateWorkoutForm(props: { exercises: Exercise[] }) {
-  return (
-    <WorkoutForm
-      onSubmit={(workout: Workout) => {
-        return axios.post("/api/workouts", workout).then((res) => res.data);
-      }}
-      {...props}
-    />
-  );
-}
-
 export function WorkoutForm({
   workout,
   exercises,
@@ -57,11 +28,10 @@ export function WorkoutForm({
 }: {
   workout?: NonNullable<Awaited<ReturnType<typeof getWorkout>>>;
   exercises: Exercise[];
-  onSubmit: MutationFunction<Workout, Workout>;
+  onSubmit: any;
 }) {
-  const workoutMutation = useMutation<Workout>(onSubmit, "/workouts");
-
   const {
+    form,
     form: {
       getValues,
       register,
@@ -76,6 +46,7 @@ export function WorkoutForm({
       incrementOrder,
     },
   } = useWorkoutForm(workout);
+  const workoutMutation = useMutation<Workout>(onSubmit, "/workouts", form);
 
   return (
     <form
@@ -88,7 +59,7 @@ export function WorkoutForm({
     >
       {isSubmitted && !isValid && (
         <Heading size={"4"} align={"center"} color="crimson">
-          Errors found
+          Errors found {errors.root?.serverError.message}
         </Heading>
       )}
 

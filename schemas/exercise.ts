@@ -13,7 +13,7 @@ export const workoutExerciseSchema = exerciseSchema.extend({
   orderId: z.number(),
 });
 
-export const workoutSchema = z.object({
+const _workoutSchema = {
   id: z.number().optional(),
   name: z.string().min(3).max(150),
   description: z.string().max(255).optional().nullable(),
@@ -29,6 +29,13 @@ export const workoutSchema = z.object({
       );
       return duplicates.length === 0;
     }, "The order of exercises is incorrect"),
+};
+
+export const workoutSchema = z.object(_workoutSchema);
+
+export const updateWorkoutSchema = z.object({
+  ..._workoutSchema,
+  id: z.number().min(1),
 });
 
 export type Workout = z.infer<typeof workoutSchema>;
