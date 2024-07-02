@@ -1,4 +1,4 @@
-import { getWorkout } from "@/app/workouts/_actions/queries";
+import { getWorkout } from "@/app/workouts/_actions";
 import { ExerciseHoverCard } from "@/app/workouts/_components/ExerciseHoverCard";
 import { Box, Button, Flex, Heading, Section } from "@radix-ui/themes";
 import Image from "next/image";

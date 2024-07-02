@@ -1,4 +1,4 @@
-import { getWorkout } from "@/app/workouts/_actions/queries";
+import { getWorkout } from "@/app/workouts/_actions";
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";

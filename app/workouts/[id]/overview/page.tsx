@@ -1,4 +1,4 @@
-import { getWorkout } from "@/app/workouts/_actions/queries";
+import { getWorkout } from "@/app/workouts/_actions";
 import {
   Avatar,
   Box,

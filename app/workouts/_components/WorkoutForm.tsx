@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@/app/hooks/useMutation";
-import { getWorkout } from "@/app/workouts/_actions/queries";
+import { getWorkout } from "@/app/workouts/_actions";
 import { Workout } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import {
