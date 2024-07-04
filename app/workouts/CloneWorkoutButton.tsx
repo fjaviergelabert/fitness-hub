@@ -1,20 +1,22 @@
 "use client";
 
-import { useMutation } from "@/app/hooks/useMutation";
 import { Button } from "@radix-ui/themes";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+import { cloneWorkout } from "./_actions";
 
 export function CloneWorkoutButton({ workoutId }: { workoutId: number }) {
-  const workoutMutation = useMutation((id: number) => {
-    return axios.get(`/api/workouts/${id}/clone`).then((res) => res.data);
-  }, "/workouts");
-
-  const onClick = () => {
-    workoutMutation.mutate(workoutId);
-  };
+  const router = useRouter();
 
   return (
-    <Button onClick={onClick} variant="solid" color="cyan">
+    <Button
+      onClick={async () => {
+        await cloneWorkout(workoutId);
+        router.push("/workouts", { scroll: false });
+        router.refresh();
+      }}
+      variant="solid"
+      color="cyan"
+    >
       Clone
     </Button>
   );

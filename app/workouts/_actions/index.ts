@@ -191,3 +191,65 @@ export async function updateWorkout(workout: Workout) {
     );
   }
 }
+
+export async function cloneWorkout(id: number) {
+  const workout = await prisma.block.findUnique({
+    where: { id: Number(id) },
+    include: {
+      exercises: {
+        include: {
+          exercise: true,
+        },
+      },
+    },
+  });
+
+  if (!workout) {
+    return { errors: "Workout not found." };
+  }
+
+  const clonedWorkout = await prisma.block.create({
+    data: {
+      name: workout.name + " - Copy: " + Date.now(),
+      description: workout.description,
+      exercises: {
+        create: workout.exercises.map((exercise) => ({
+          type: exercise.type,
+          orderId: exercise.orderId,
+          exercise: {
+            connectOrCreate: {
+              create: {
+                name: exercise.exercise.name,
+                description: exercise.exercise.description,
+                mediaUrl: exercise.exercise.mediaUrl,
+              },
+              where: {
+                id: exercise.exerciseId,
+              },
+            },
+          },
+        })),
+      },
+    },
+    include: {
+      exercises: {
+        include: {
+          exercise: true,
+        },
+      },
+    },
+  });
+
+  return clonedWorkout;
+}
+
+export async function deleteWorkout(id: number) {
+  await prisma.$transaction([
+    prisma.blockExercise.deleteMany({
+      where: { blockId: id },
+    }),
+    prisma.block.delete({
+      where: { id },
+    }),
+  ]);
+}
