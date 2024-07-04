@@ -1,10 +1,16 @@
 import { ExerciseType } from "@prisma/client";
 import { z } from "zod";
 
-export const exerciseSchema = z.object({
+const _exerciseSchema = {
   name: z.string().min(3).max(150),
   description: z.string().max(255).optional().nullable(),
   mediaUrl: z.string().max(255).optional().nullable(),
+};
+
+export const exerciseSchema = z.object(_exerciseSchema);
+export const updateExerciseSchema = z.object({
+  ..._exerciseSchema,
+  id: z.number().min(1),
 });
 
 export const workoutExerciseSchema = exerciseSchema.extend({

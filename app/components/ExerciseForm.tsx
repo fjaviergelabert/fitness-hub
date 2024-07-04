@@ -4,24 +4,20 @@ import { exerciseSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
-import axios from "axios";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { CiCircleInfo } from "react-icons/ci";
+import { createExercise, updateExercise } from "../exercises/_actions";
 
 export function EditForm(props: { exercise: Exercise }) {
-  const exerciseMutation = useMutation((exercise: Exercise) => {
-    return axios
-      .put("/api/exercises/" + props.exercise.id, exercise)
-      .then((res) => res.data);
-  }, "/exercises");
+  const exerciseMutation = useMutation(updateExercise as any, "/exercises");
 
   return (
     <ExerciseForm
       onSubmit={(exercise: Exercise) => {
-        exerciseMutation.mutate(exercise);
+        exerciseMutation.mutate({ ...exercise, id: props.exercise.id });
       }}
       {...props}
       buttonSection={
@@ -41,9 +37,7 @@ export function EditForm(props: { exercise: Exercise }) {
 }
 
 export function CreateForm() {
-  const exerciseMutation = useMutation((exercise: Exercise) => {
-    return axios.post("/api/exercises", exercise).then((res) => res.data);
-  }, "/exercises");
+  const exerciseMutation = useMutation(createExercise as any, "/exercises");
 
   return (
     <ExerciseForm

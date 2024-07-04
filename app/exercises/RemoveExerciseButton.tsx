@@ -1,16 +1,16 @@
 "use client";
-import axios from "axios";
-import { useMutation } from "../hooks/useMutation";
+import { useRouter } from "next/navigation";
 import { RemoveButton } from "../workouts/_components/RemoveButton";
+import { deleteExercise } from "./_actions";
 
 export function RemoveExerciseButton({ exerciseId }: { exerciseId: number }) {
-  const mutation = useMutation((id: number) => {
-    return axios.delete("/api/exercises/" + id).then((res) => res.data);
-  }, "/exercises");
+  const router = useRouter();
   return (
     <RemoveButton
-      onClick={() => {
-        mutation.mutate(exerciseId);
+      onClick={async () => {
+        await deleteExercise(exerciseId);
+        router.push("/exercises", { scroll: false });
+        router.refresh();
       }}
     />
   );
