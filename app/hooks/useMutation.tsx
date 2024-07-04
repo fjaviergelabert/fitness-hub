@@ -12,43 +12,46 @@ type TError<T> = {
   errors: string | Record<keyof T, string>;
 };
 
-function isTError<T>(data: T | TError<T>): data is TError<T> {
-  return (
-    typeof (data as TError<T>).errors === "string" ||
-    typeof (data as TError<T>).errors === "object"
-  );
-}
-
-export function useMutation<T extends FieldValues>(
+export function useFormMutation<T extends FieldValues>(
   mutationFn: MutationFunction<T, T>,
   routeRedirect = "/",
   form: UseFormReturn<T>
+) {
+  return useMutation(mutationFn, routeRedirect, (errors) => {
+    if (typeof errors === "string") {
+      form.setError("root.serverError", {
+        type: "400",
+        message: errors,
+      });
+    } else {
+      (Object.keys(errors) as (keyof T)[]).forEach((key) => {
+        form.setError(key as Path<T>, {
+          type: "400",
+          message: (errors as Record<keyof T, string>)[key],
+        });
+      });
+    }
+  });
+}
+
+// TODO: Decouple error handling logic
+export function useMutation<T extends FieldValues>(
+  mutationFn: MutationFunction<T, T>,
+  routeRedirect = "/",
+  onError: (error: TError<T>) => void = () => {}
 ) {
   const router = useRouter();
   return useReactQueryMutation({
     mutationFn: (args: T) =>
       mutationFn(args)
         .then((data: T) => {
-          if (!isTError(data)) {
-            return data;
+          if (data.errors) {
+            onError(data.errors);
+            throw new Error(
+              typeof data.errors === "string" ? data.errors : "Validation error"
+            );
           }
-          const errors = data.errors;
-          if (typeof errors === "string") {
-            form.setError("root.serverError", {
-              type: "400",
-              message: errors,
-            });
-          } else {
-            (Object.keys(errors) as (keyof T)[]).forEach((key) => {
-              form.setError(key as Path<T>, {
-                type: "400",
-                message: errors[key] as string,
-              });
-            });
-          }
-          throw new Error(
-            typeof errors === "string" ? errors : "Validation error"
-          );
+          return data;
         })
         .catch((e: AxiosError) => {
           throw e;

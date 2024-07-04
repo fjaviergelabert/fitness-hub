@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@/app/hooks/useMutation";
+import { useFormMutation } from "@/app/hooks/useMutation";
 import { getWorkout } from "@/app/workouts/_actions";
 import { Workout } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
@@ -46,7 +46,7 @@ export function WorkoutForm({
       incrementOrder,
     },
   } = useWorkoutForm(workout);
-  const workoutMutation = useMutation<Workout>(onSubmit, "/workouts", form);
+  const workoutMutation = useFormMutation<Workout>(onSubmit, "/workouts", form);
 
   return (
     <form
