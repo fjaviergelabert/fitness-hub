@@ -11,7 +11,7 @@ export async function deleteExercise(id: number) {
     return { errors: "Exercise is being used in a workout." };
   }
 
-  await prisma.exercise.delete({
+  return await prisma.exercise.delete({
     where: { id: id },
   });
 }
@@ -25,7 +25,7 @@ export async function createExercise(exercise: Exercise) {
   }
 
   if (await prisma.exercise.findUnique({ where: { name: exercise.name } })) {
-    return { errors: "Exercise already exists." };
+    return { errors: { name: "Exercise already exists." } };
   }
 
   const newExercise = await prisma.exercise.create({
@@ -53,6 +53,16 @@ export async function updateExercise(exercise: Exercise) {
   });
   if (!dbExercise) {
     return { errors: "Exercise not found." };
+  }
+
+  const isSameName = exercise.name === dbExercise.name;
+  if (
+    !isSameName &&
+    (await prisma.block.findUnique({ where: { name: exercise.name } }))
+  ) {
+    return {
+      errors: { name: "Exercise `name` already exists." },
+    };
   }
 
   try {

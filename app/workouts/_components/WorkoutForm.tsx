@@ -1,7 +1,11 @@
 "use client";
 
 import { useFormMutation } from "@/app/hooks/useMutation";
-import { getWorkout } from "@/app/workouts/_actions";
+import {
+  createWorkout,
+  getWorkout,
+  updateWorkout,
+} from "@/app/workouts/_actions";
 import { Workout } from "@/schemas/exercise";
 import { Exercise } from "@prisma/client";
 import {
@@ -28,7 +32,9 @@ export function WorkoutForm({
 }: {
   workout?: NonNullable<Awaited<ReturnType<typeof getWorkout>>>;
   exercises: Exercise[];
-  onSubmit: any;
+  onSubmit: (
+    workout: Workout
+  ) => ReturnType<typeof updateWorkout | typeof createWorkout>;
 }) {
   const {
     form,
@@ -46,7 +52,11 @@ export function WorkoutForm({
       incrementOrder,
     },
   } = useWorkoutForm(workout);
-  const workoutMutation = useFormMutation<Workout>(onSubmit, "/workouts", form);
+  const workoutMutation = useFormMutation<any, Workout>(
+    onSubmit,
+    "/workouts",
+    form
+  );
 
   return (
     <form

@@ -1,18 +1,19 @@
 "use client";
 
 import { Button } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
+import { useToastMutation } from "../hooks/useMutation";
 import { cloneWorkout } from "./_actions";
 
 export function CloneWorkoutButton({ workoutId }: { workoutId: number }) {
-  const router = useRouter();
+  const workoutMutation = useToastMutation<any, number>(
+    cloneWorkout,
+    "/workouts"
+  );
 
   return (
     <Button
       onClick={async () => {
-        await cloneWorkout(workoutId);
-        router.push("/workouts", { scroll: false });
-        router.refresh();
+        workoutMutation.mutate(workoutId);
       }}
       variant="solid"
       color="cyan"

@@ -3,74 +3,92 @@ import {
   MutationFunction,
   useMutation as useReactQueryMutation,
 } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import { Path, UseFormReturn } from "react-hook-form";
 import { toast } from "react-toastify";
 
-type TError<T> = {
+export type TError<T> = {
   errors: string | Record<keyof T, string>;
 };
 
-export function useFormMutation<T extends FieldValues>(
-  mutationFn: MutationFunction<T, T>,
+function isTError<T>(value: any): value is TError<T> {
+  return typeof value === "object" && "errors" in value;
+}
+
+export function useFormMutation<Return extends TError<Return>, Variables>(
+  mutationFn: MutationFunction<Return, Variables>,
   routeRedirect = "/",
-  form: UseFormReturn<T>
+  form: UseFormReturn<Return>
 ) {
-  return useMutation(mutationFn, routeRedirect, (errors) => {
+  return useMutation(mutationFn, routeRedirect, ({ errors }) => {
     if (typeof errors === "string") {
       form.setError("root.serverError", {
         type: "400",
         message: errors,
       });
     } else {
-      (Object.keys(errors) as (keyof T)[]).forEach((key) => {
-        form.setError(key as Path<T>, {
+      (Object.keys(errors) as (keyof Return)[]).forEach((key) => {
+        form.setError(key as Path<Return>, {
           type: "400",
-          message: (errors as Record<keyof T, string>)[key],
+          message: (errors as Record<keyof Return, string>)[key],
         });
       });
     }
   });
 }
 
-// TODO: Decouple error handling logic
-export function useMutation<T extends FieldValues>(
-  mutationFn: MutationFunction<T, T>,
-  routeRedirect = "/",
-  onError: (error: TError<T>) => void = () => {}
+export function useToastMutation<Return extends TError<Return>, Variables>(
+  mutationFn: MutationFunction<Return, Variables>,
+  routeRedirect = "/"
 ) {
-  const router = useRouter();
-  return useReactQueryMutation({
-    mutationFn: (args: T) =>
-      mutationFn(args)
-        .then((data: T) => {
-          if (data.errors) {
-            onError(data.errors);
-            throw new Error(
-              typeof data.errors === "string" ? data.errors : "Validation error"
-            );
-          }
-          return data;
-        })
-        .catch((e: AxiosError) => {
-          throw e;
-        }),
-    onError: async (e: AxiosError<{ error: string }>) => {
-      if ((e.status = 400)) {
-        toast.warning(e.response?.data.error, {
+  return useMutation(
+    mutationFn,
+    routeRedirect,
+    ({ errors }) => {
+      if (typeof errors === "string") {
+        toast.warning(errors, {
           theme: "colored",
         });
       } else {
-        toast.error("An error ocurred.", {
+        const message = "An error ocurred.";
+        console.trace(message, errors);
+        toast.error(message, {
           theme: "colored",
         });
       }
     },
-    onSuccess: async () => {
+    () => {
       toast.success("Success.", { theme: "colored" });
+    }
+  );
+}
+
+function useMutation<Return, Variables>(
+  mutationFn: MutationFunction<Return, Variables>,
+  routeRedirect = "/",
+  onError: (errors: {
+    errors: string | Record<keyof Return, string>;
+  }) => void = () => {},
+  onSuccess: () => void = () => {}
+) {
+  const router = useRouter();
+  return useReactQueryMutation<
+    Return | TError<Return>,
+    TError<Return>,
+    Variables
+  >({
+    mutationFn: (args) =>
+      mutationFn(args).then((data) => {
+        if (isTError<Return>(data)) {
+          throw data;
+        }
+        return data;
+      }),
+    onSuccess: () => {
+      onSuccess();
       router.push(routeRedirect);
       router.refresh();
     },
+    onError,
   });
 }

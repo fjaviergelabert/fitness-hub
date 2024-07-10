@@ -1,16 +1,17 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useToastMutation } from "../hooks/useMutation";
 import { RemoveButton } from "../workouts/_components/RemoveButton";
 import { deleteExercise } from "./_actions";
 
 export function RemoveExerciseButton({ exerciseId }: { exerciseId: number }) {
-  const router = useRouter();
+  const exerciseMutation = useToastMutation<any, number>(
+    deleteExercise,
+    "/exercises"
+  );
   return (
     <RemoveButton
       onClick={async () => {
-        await deleteExercise(exerciseId);
-        router.push("/exercises", { scroll: false });
-        router.refresh();
+        exerciseMutation.mutate(exerciseId);
       }}
     />
   );

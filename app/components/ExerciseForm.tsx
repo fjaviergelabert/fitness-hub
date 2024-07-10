@@ -1,25 +1,34 @@
 "use client";
-import { useMutation } from "@/app/hooks/useMutation";
+import { useFormMutation } from "@/app/hooks/useMutation";
 import { exerciseSchema } from "@/schemas/exercise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { CiCircleInfo } from "react-icons/ci";
 import { createExercise, updateExercise } from "../exercises/_actions";
 
 export function EditForm(props: { exercise: Exercise }) {
-  const exerciseMutation = useMutation(updateExercise as any, "/exercises");
+  const form = useForm<Exercise>({
+    resolver: zodResolver(exerciseSchema),
+    defaultValues: props.exercise,
+  });
+  const exerciseMutation = useFormMutation<any, Exercise>(
+    updateExercise,
+    "/exercises",
+    form
+  );
 
   return (
     <ExerciseForm
-      onSubmit={(exercise: Exercise) => {
+      exercise={props.exercise}
+      form={form}
+      onSubmit={(exercise) => {
         exerciseMutation.mutate({ ...exercise, id: props.exercise.id });
       }}
-      {...props}
       buttonSection={
         <Button
           className="self-end"
@@ -37,11 +46,25 @@ export function EditForm(props: { exercise: Exercise }) {
 }
 
 export function CreateForm() {
-  const exerciseMutation = useMutation(createExercise as any, "/exercises");
+  const form = useForm<Exercise>({
+    resolver: zodResolver(exerciseSchema),
+    defaultValues: {
+      id: 0,
+      name: "",
+      description: "",
+      mediaUrl: "",
+    },
+  });
+  const exerciseMutation = useFormMutation<any, Exercise>(
+    createExercise,
+    "/exercises",
+    form
+  );
 
   return (
     <ExerciseForm
-      onSubmit={(exercise: Exercise) => {
+      form={form}
+      onSubmit={(exercise) => {
         exerciseMutation.mutate(exercise);
       }}
       buttonSection={
@@ -61,29 +84,20 @@ export function CreateForm() {
 }
 
 export function ExerciseForm({
-  exercise,
   buttonSection,
   onSubmit,
+  form,
 }: {
   exercise?: Exercise;
   buttonSection: ReactNode;
   onSubmit: (e: Exercise) => void;
+  form: UseFormReturn<Exercise>;
 }) {
-  const form = useForm<Exercise>({
-    resolver: zodResolver(exerciseSchema),
-    defaultValues: exercise || {
-      id: 0,
-      name: "",
-      description: "",
-      mediaUrl: "",
-    },
-  });
   const {
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitted },
   } = form;
-
   return (
     <FormProvider {...form}>
       <form
@@ -95,7 +109,12 @@ export function ExerciseForm({
             <Callout.Icon>
               <CiCircleInfo />
             </Callout.Icon>
-            <Callout.Text>The form is not valid.</Callout.Text>
+
+            <Callout.Text>
+              The form is not valid.{" "}
+              {errors.root?.serverError &&
+                `Server Error: ${errors.root?.serverError.message}`}
+            </Callout.Text>
           </Callout.Root>
         )}
         <fieldset className="max-w-sm">
