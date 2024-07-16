@@ -1,5 +1,6 @@
 "use client";
-import { DropdownMenu, Text } from "@radix-ui/themes";
+import { Button, DropdownMenu, Text } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, forwardRef } from "react";
@@ -8,13 +9,14 @@ import AppLogo from "./AppLogo";
 
 export function NavBar() {
   const path = usePathname();
+  const session = useSession();
 
   return (
     <nav className="flex space-x-6 border-b-2 h-14 items-center">
       <Link href="/">
         <AppLogo />
       </Link>
-      <ul className="flex space-x-2">
+      <ul className="flex space-x-2 flex-grow">
         <li>
           <MenuLink isActive={path === "/workouts"} href="/workouts" hoverable>
             Workouts
@@ -42,6 +44,16 @@ export function NavBar() {
           </DropdownMenu.Root>
         </li>
       </ul>
+      {session.status === "unauthenticated" && (
+        <Button variant="surface" asChild>
+          <Link href={"/api/auth/signin"}> Sign In</Link>
+        </Button>
+      )}
+      {session.status === "authenticated" && (
+        <Button variant="soft" asChild>
+          <Link href={"/api/auth/signout"}> Sign out </Link>
+        </Button>
+      )}
     </nav>
   );
 }
