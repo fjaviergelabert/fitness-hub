@@ -38,12 +38,14 @@ async function Workouts() {
   return (
     <>
       {workouts.length === 0 ? (
-        <>
-          <Button asChild>
-            <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
-          </Button>
-          <p>No workouts found.</p>
-        </>
+        <Flex align={"center"} direction={"column"}>
+          <Section>
+            <Button asChild>
+              <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
+            </Button>
+            <p>No workouts found.</p>
+          </Section>
+        </Flex>
       ) : (
         <>
           <Flex align={"center"} direction={"column"} gap={"3"} asChild>

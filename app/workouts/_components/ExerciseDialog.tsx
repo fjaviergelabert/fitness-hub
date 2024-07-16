@@ -1,10 +1,16 @@
 "use client";
 import { ExerciseForm } from "@/app/components/ExerciseForm";
-import { WorkoutExercise } from "@/schemas/exercise";
+import { exerciseSchema, WorkoutExercise } from "@/schemas/exercise";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { useState } from "react";
-import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
+import {
+  FieldValues,
+  useForm,
+  useFormContext,
+  UseFormReturn,
+} from "react-hook-form";
 
 export const ExerciseDialog = ({
   onSubmit,
@@ -12,6 +18,15 @@ export const ExerciseDialog = ({
   onSubmit: (exercise: WorkoutExercise) => void;
 }) => {
   const [open, setOpen] = useState(false);
+  const form = useForm<Exercise>({
+    resolver: zodResolver(exerciseSchema),
+    defaultValues: {
+      id: 0,
+      name: "",
+      description: "",
+      mediaUrl: "",
+    },
+  });
 
   const submit = (exercise: FieldValues) => {
     onSubmit(exercise as WorkoutExercise);
@@ -28,6 +43,7 @@ export const ExerciseDialog = ({
       <AlertDialog.Content style={{ maxWidth: 450 }}>
         <AlertDialog.Title>Create new Exercise</AlertDialog.Title>
         <ExerciseForm
+          form={form}
           onSubmit={() => {}}
           buttonSection={
             <Flex gap="3" mt="4" justify="end">

@@ -6,7 +6,7 @@ import { RemoveExerciseButton } from "./RemoveExerciseButton";
 
 function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
   return (
-    <Table.Root>
+    <Table.Root variant="surface">
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
