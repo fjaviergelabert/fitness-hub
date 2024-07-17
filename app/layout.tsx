@@ -28,7 +28,7 @@ export default async function RootLayout({
           <SessionProvider session={session}>
             <Theme appearance="dark" accentColor="red">
               <main>
-                <Container height={"100vh"}>
+                <Container height={"100vh"} size={{ sm: "2", md: "3" }}>
                   <NavBar />
                   <Section height={"100%"}>{children}</Section>
                   <ToastContainer />

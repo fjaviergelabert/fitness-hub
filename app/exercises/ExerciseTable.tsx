@@ -10,7 +10,7 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell className="hidden lg:table-cell" colSpan={2}>
+          <Table.ColumnHeaderCell className="hidden sm:table-cell" colSpan={2}>
             Description
           </Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
@@ -23,7 +23,7 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
             <Table.RowHeaderCell className="truncate lg:table-cell">
               {exercise.name}
             </Table.RowHeaderCell>
-            <Table.Cell className="hidden lg:table-cell">
+            <Table.Cell className="hidden sm:table-cell max-w-md">
               <Description>{exercise.description}</Description>
             </Table.Cell>
             <Table.Cell align="right">

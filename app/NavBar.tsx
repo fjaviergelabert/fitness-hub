@@ -12,7 +12,7 @@ export function NavBar() {
   const session = useSession();
 
   return (
-    <nav className="flex space-x-6 border-b-2 h-14 items-center">
+    <nav className="flex space-x-6 border-b-2 h-14 items-center px-4">
       <Link href="/">
         <AppLogo />
       </Link>
@@ -33,7 +33,7 @@ export function NavBar() {
                 Exercises
               </Text>
             </DropdownMenu.Trigger>
-            <DropdownMenu.Content>
+            <DropdownMenu.Content sideOffset={5} align="start">
               <DropdownMenu.Item>
                 <MenuLink href="/exercises">View</MenuLink>
               </DropdownMenu.Item>
@@ -46,12 +46,12 @@ export function NavBar() {
       </ul>
       {session.status === "unauthenticated" && (
         <Button variant="surface" asChild>
-          <Link href={"/api/auth/signin"}> Sign In</Link>
+          <Link href={"/api/auth/signin"}>Sign In</Link>
         </Button>
       )}
       {session.status === "authenticated" && (
         <Button variant="soft" asChild>
-          <Link href={"/api/auth/signout"}> Sign out </Link>
+          <Link href={"/api/auth/signout"}>Sign out</Link>
         </Button>
       )}
     </nav>
@@ -59,7 +59,7 @@ export function NavBar() {
 }
 
 const MenuLink = forwardRef<
-  HTMLButtonElement,
+  HTMLAnchorElement,
   PropsWithChildren<{ href: string; isActive?: boolean; hoverable?: boolean }>
 >(({ isActive = false, href, hoverable = false, children }, ref) => {
   return (
