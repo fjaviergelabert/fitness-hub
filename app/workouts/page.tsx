@@ -1,18 +1,8 @@
 import prisma from "@/prisma/client";
 import { Prisma } from "@prisma/client";
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Heading,
-  Section,
-  Text,
-} from "@radix-ui/themes";
+import { Button, Flex, Heading, Section } from "@radix-ui/themes";
 import Link from "next/link";
-import { Description } from "../components/Description";
-import { CloneWorkoutButton } from "./CloneWorkoutButton";
-import { RemoveWorkoutButton } from "./RemoveWorkoutButton";
+import { WorkoutCard } from "./WorkoutCard";
 
 export type PrismaWorkout = Prisma.BlockGetPayload<{
   include: {
@@ -59,48 +49,7 @@ async function Workouts() {
           <Flex direction={"column"} align={"center"} gap={"3"} asChild>
             <Section>
               {workouts.map((workout) => (
-                <Box
-                  key={workout.id}
-                  className="hover:bg-orange-950 min-w-96 w-3/6"
-                  asChild
-                >
-                  <Card size={"3"}>
-                    <Flex
-                      direction={"row"}
-                      align={"center"}
-                      justify={"between"}
-                      gap={"2"}
-                    >
-                      <Link
-                        className="min-w-0"
-                        href={`/workouts/${workout.id}/overview`}
-                      >
-                        <Text
-                          className="pointer-events-auto"
-                          as="p"
-                          size="2"
-                          weight="bold"
-                        >
-                          {workout.name}
-                        </Text>
-                        {workout.description && (
-                          <Description>{workout.description}</Description>
-                        )}
-                      </Link>
-                      <Flex
-                        className="pointer-events-auto"
-                        justify={"end"}
-                        gap={"3"}
-                      >
-                        <Button variant="solid" color="blue" asChild>
-                          <Link href={`/workouts/${workout.id}`}>Edit</Link>
-                        </Button>
-                        <CloneWorkoutButton workoutId={workout.id} />
-                        <RemoveWorkoutButton workoutId={workout.id} />
-                      </Flex>
-                    </Flex>
-                  </Card>
-                </Box>
+                <WorkoutCard key={workout.id} workout={workout} />
               ))}
             </Section>
           </Flex>
