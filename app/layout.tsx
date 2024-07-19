@@ -30,7 +30,10 @@ export default async function RootLayout({
               <main>
                 <Container height={"100vh"} size={{ sm: "2", md: "3" }}>
                   <NavBar />
-                  <Section height={"100%"}>{children}</Section>
+
+                  <Section height={"100%"} px="2">
+                    {children}
+                  </Section>
                   <ToastContainer />
                 </Container>
               </main>

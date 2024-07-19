@@ -1,3 +1,4 @@
+import { Description } from "@/app/components/Description";
 import { getWorkout } from "@/app/workouts/_actions";
 import {
   Avatar,
@@ -35,9 +36,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         <Flex direction={"column"} width={{ sm: "70vh", lg: "100vh" }} asChild>
           <Section display={{ initial: "none", xs: "none", sm: "initial" }}>
             <Separator my="3" size="4" />
-            <Text as="p" my={"2"} size={"2"}>
-              {workout.description}
-            </Text>
+            <Description>{workout.description}</Description>
             <Separator my="3" size="4" />
           </Section>
         </Flex>

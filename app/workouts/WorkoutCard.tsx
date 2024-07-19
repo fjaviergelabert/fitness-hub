@@ -7,11 +7,7 @@ import { RemoveWorkoutButton } from "./RemoveWorkoutButton";
 
 export function WorkoutCard({ workout }: { workout: PrismaWorkout }) {
   return (
-    <Box
-      key={workout.id}
-      className="hover:bg-orange-950 min-w-96 w-3/6"
-      asChild
-    >
+    <Box className="hover:bg-orange-950 min-w-96 w-3/6" asChild>
       <Card size={"3"}>
         <Flex direction={"row"} align={"center"} justify={"between"} gap={"2"}>
           <Link className="min-w-0" href={`/workouts/${workout.id}/overview`}>

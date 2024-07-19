@@ -40,7 +40,7 @@ export function WorkoutExercises({
       />
       {exercises.length > 1 && (
         <Flex
-          className="invisible group-hover:visible"
+          className="visible md:invisible md:group-hover:visible"
           direction={"column"}
           justify={
             index === 0

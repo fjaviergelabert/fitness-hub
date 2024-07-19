@@ -7,7 +7,6 @@ import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
-import { AiOutlineLoading } from "react-icons/ai";
 import { CiCircleInfo } from "react-icons/ci";
 import { createExercise, updateExercise } from "../exercises/_actions";
 
@@ -34,11 +33,9 @@ export function EditForm(props: { exercise: Exercise }) {
           className="self-end"
           type="submit"
           disabled={exerciseMutation.isPending}
+          loading={exerciseMutation.isPending}
         >
           SAVE
-          {exerciseMutation.isPending && (
-            <AiOutlineLoading className="animate-spin" />
-          )}
         </Button>
       }
     />
@@ -72,11 +69,9 @@ export function CreateForm() {
           className="self-end"
           type="submit"
           disabled={exerciseMutation.isPending}
+          loading={exerciseMutation.isPending}
         >
           SAVE
-          {exerciseMutation.isPending && (
-            <AiOutlineLoading className="animate-spin" />
-          )}
         </Button>
       }
     />
