@@ -41,7 +41,7 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
         </Section>
       </Flex>
       <Box>
-        <Button disabled={index === 1} asChild>
+        <Button disabled={index === 1}>
           <Link
             href={`${index - 1}`}
             className={index === 1 ? "pointer-events-none" : ""}
@@ -50,7 +50,7 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
             {"<"}
           </Link>
         </Button>
-        <Button disabled={index === workout.exercises.length} asChild>
+        <Button disabled={index === workout.exercises.length}>
           <Link
             href={`${index + 1}`}
             className={
