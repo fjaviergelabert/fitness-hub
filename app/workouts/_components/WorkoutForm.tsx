@@ -16,7 +16,6 @@ import {
   TextArea,
   TextField,
 } from "@radix-ui/themes";
-import { AiOutlineLoading } from "react-icons/ai";
 import { useWorkoutForm } from "../_hooks/useWorkoutForm";
 import { ExerciseDialog } from "./ExerciseDialog";
 import { ExerciseMenu } from "./ExerciseMenu";
@@ -115,11 +114,9 @@ export function WorkoutForm({
         className="self-end"
         type="submit"
         disabled={workoutMutation.isPending}
+        loading={workoutMutation.isPending}
       >
         SAVE
-        {workoutMutation.isPending && (
-          <AiOutlineLoading className="animate-spin" />
-        )}
       </Button>
     </form>
   );
