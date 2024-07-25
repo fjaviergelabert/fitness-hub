@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { User } from "@prisma/client";
 import { redirect, RedirectType } from "next/navigation";
 
 export default async function RootLayout({
@@ -9,8 +8,8 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
 
-  if (!session || (session!.user as User).role !== "ADMIN") {
-    redirect("/workouts", RedirectType.push);
+  if (session?.user?.role !== "ADMIN") {
+    return redirect("/api/auth/signin", RedirectType.push);
   }
 
   return children;

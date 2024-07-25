@@ -1,5 +1,5 @@
 "use client";
-import { Button, DropdownMenu, Text } from "@radix-ui/themes";
+import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,11 +26,12 @@ export function NavBar() {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <Text
-                className={`${
+                className={` flex gap-1 items-center ${
                   path.includes("/exercises") && "text-red-300"
                 } hover:cursor-pointer hover:text-red-500 transition-colors`}
               >
                 Exercises
+                <DropdownMenu.TriggerIcon />
               </Text>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content sideOffset={5} align="start">
@@ -43,16 +44,49 @@ export function NavBar() {
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </li>
+        {session.data?.user.role === "ADMIN" && (
+          <li>
+            <MenuLink
+              isActive={path === "/admin/users"}
+              href="/admin/users"
+              hoverable
+            >
+              Users
+            </MenuLink>
+          </li>
+        )}
       </ul>
+
       {session.status === "unauthenticated" && (
         <Button variant="surface" asChild>
           <Link href={"/api/auth/signin"}>Sign In</Link>
         </Button>
       )}
       {session.status === "authenticated" && (
-        <Button variant="soft" asChild>
-          <Link href={"/api/auth/signout"}>Sign out</Link>
-        </Button>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <Text className="cursor-pointer">
+              <Avatar
+                size="3"
+                src={session.data?.user?.image || ""}
+                radius="full"
+                fallback="?"
+              />
+            </Text>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content sideOffset={5} align="start">
+            <DropdownMenu.Item>
+              <Link className="flex-1" href="/profile">
+                Profile
+              </Link>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item className="cursor-pointer" color="red">
+              <Link className="flex-1" href={"/api/auth/signout"}>
+                Sign out
+              </Link>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       )}
     </nav>
   );

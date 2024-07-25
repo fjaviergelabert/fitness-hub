@@ -1,15 +1,20 @@
 import { auth } from "@/auth";
 import prisma from "@/prisma/client";
-import { User, UserRole } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import { Button, Flex, Select, Table } from "@radix-ui/themes";
 import { revalidatePath } from "next/cache";
 
 async function Exercises() {
   const session = await auth();
-  const user = session!.user as User;
-  const users = await prisma.user.findMany({
-    where: { email: { not: user.email } },
-  });
+  const sessionUser = session?.user;
+
+  const users = sessionUser
+    ? await prisma.user.findMany({
+        ...(process.env.NODE_ENV !== "development"
+          ? { where: { email: { not: sessionUser.email } } }
+          : {}),
+      })
+    : [];
 
   return users.length === 0 ? (
     <Flex align={"center"} direction={"column"}>
