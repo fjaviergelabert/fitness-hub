@@ -1,4 +1,5 @@
 "use client";
+import * as Authorize from "@/app/components/Authorize";
 import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -6,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { PropsWithChildren, forwardRef } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import AppLogo from "./AppLogo";
-
 export function NavBar() {
   const path = usePathname();
   const session = useSession();
@@ -44,7 +44,7 @@ export function NavBar() {
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </li>
-        {session.data?.user.role === "ADMIN" && (
+        <Authorize.ADMIN>
           <li>
             <MenuLink
               isActive={path === "/admin/users"}
@@ -54,15 +54,17 @@ export function NavBar() {
               Users
             </MenuLink>
           </li>
-        )}
+        </Authorize.ADMIN>
       </ul>
 
-      {session.status === "unauthenticated" && (
-        <Button variant="surface" asChild>
-          <Link href={"/api/auth/signin"}>Sign In</Link>
-        </Button>
-      )}
-      {session.status === "authenticated" && (
+      <Authorize.default
+        key={"kiko"}
+        fallback={
+          <Button variant="surface" asChild>
+            <Link href={"/api/auth/signin"}>Sign In</Link>
+          </Button>
+        }
+      >
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <Text className="cursor-pointer">
@@ -87,7 +89,7 @@ export function NavBar() {
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-      )}
+      </Authorize.default>
     </nav>
   );
 }

@@ -1,3 +1,4 @@
+import * as Authorize from "@/app/components/Authorize";
 import prisma from "@/prisma/client";
 import { Prisma } from "@prisma/client";
 import { Button, Flex, Heading, Section } from "@radix-ui/themes";
@@ -30,9 +31,12 @@ async function Workouts() {
       {workouts.length === 0 ? (
         <Flex align={"center"} direction={"column"}>
           <Section>
-            <Button asChild>
-              <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
-            </Button>
+            <Authorize.ADMIN>
+              <Button asChild>
+                <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
+              </Button>
+            </Authorize.ADMIN>
+
             <p>No workouts found.</p>
           </Section>
         </Flex>
