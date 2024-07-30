@@ -1,5 +1,5 @@
 "use client";
-import * as Authorize from "@/app/components/Authorize";
+import * as Auth from "@/app/components/Authorize";
 import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 import { PropsWithChildren, forwardRef } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import AppLogo from "./AppLogo";
+
 export function NavBar() {
   const path = usePathname();
   const session = useSession();
-
   return (
     <nav className="flex space-x-6 border-b-2 h-14 items-center px-4">
       <Link href="/">
@@ -44,7 +44,7 @@ export function NavBar() {
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </li>
-        <Authorize.ADMIN>
+        <Auth.ADMIN>
           <li>
             <MenuLink
               isActive={path === "/admin/users"}
@@ -54,10 +54,10 @@ export function NavBar() {
               Users
             </MenuLink>
           </li>
-        </Authorize.ADMIN>
+        </Auth.ADMIN>
       </ul>
 
-      <Authorize.default
+      <Auth.Authenticated
         key={"kiko"}
         fallback={
           <Button variant="surface" asChild>
@@ -89,7 +89,7 @@ export function NavBar() {
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-      </Authorize.default>
+      </Auth.Authenticated>
     </nav>
   );
 }
