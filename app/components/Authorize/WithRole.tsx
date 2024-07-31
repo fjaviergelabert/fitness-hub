@@ -4,29 +4,18 @@ import React, { PropsWithChildren } from "react";
 
 type AuthProps = PropsWithChildren<{ fallback?: React.ReactElement }>;
 
-export function Authenticated({ fallback, children }: AuthProps) {
-  const session = useSession();
-
-  if (session?.status === "unauthenticated") {
-    return fallback || null;
-  }
-
-  return children;
-}
-
-export const withRole = (role?: UserRole) => {
-  const Component: React.FC<AuthProps> = ({
-    fallback,
-    children,
-  }: AuthProps) => {
+export const withRole =
+  (roles: UserRole[] = []) =>
+  ({ fallback, children }: AuthProps) => {
     const session = useSession();
 
-    if (role && session?.data?.user.role !== role) {
+    if (session?.status === "unauthenticated") {
       return fallback || null;
     }
 
-    return <Authenticated fallback={fallback}>{children}</Authenticated>;
+    if (roles.length > 0 && !roles.includes(session?.data?.user.role!)) {
+      return fallback || null;
+    }
+
+    return children;
   };
-  Component.displayName = "abcd";
-  return Component;
-};

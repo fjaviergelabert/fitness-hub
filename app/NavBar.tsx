@@ -57,7 +57,7 @@ export function NavBar() {
         </Auth.ADMIN>
       </ul>
 
-      <Auth.Authenticated
+      <Auth.USER
         key={"kiko"}
         fallback={
           <Button variant="surface" asChild>
@@ -89,7 +89,7 @@ export function NavBar() {
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-      </Auth.Authenticated>
+      </Auth.USER>
     </nav>
   );
 }

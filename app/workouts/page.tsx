@@ -31,11 +31,11 @@ async function Workouts() {
       {workouts.length === 0 ? (
         <Flex align={"center"} direction={"column"}>
           <Section>
-            <Auth.ADMIN>
+            <Auth.PERSONAL_TRAINER>
               <Button asChild>
                 <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
               </Button>
-            </Auth.ADMIN>
+            </Auth.PERSONAL_TRAINER>
 
             <p>No workouts found.</p>
           </Section>
