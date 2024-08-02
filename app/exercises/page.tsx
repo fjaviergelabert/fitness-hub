@@ -1,15 +1,26 @@
 import prisma from "@/prisma/client";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Section } from "@radix-ui/themes";
 import ExerciseTable from "./ExerciseTable";
+import { ExercisesHeading } from "./ExercisesHeading";
 
 async function Exercises() {
   const exercises = await prisma.exercise.findMany();
   return exercises.length === 0 ? (
-    <Flex align={"center"} direction={"column"}>
-      <p>No exercises found.</p>
-    </Flex>
+    <>
+      <ExercisesHeading />
+      <Flex align={"center"} direction={"column"} asChild>
+        <Section>
+          <p>No exercises found.</p>
+        </Section>
+      </Flex>
+    </>
   ) : (
-    <ExerciseTable exercises={exercises} />
+    <>
+      <ExercisesHeading />
+      <Section>
+        <ExerciseTable exercises={exercises} />
+      </Section>
+    </>
   );
 }
 
