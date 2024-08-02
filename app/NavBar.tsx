@@ -38,9 +38,11 @@ export function NavBar() {
               <DropdownMenu.Item>
                 <MenuLink href="/exercises">View</MenuLink>
               </DropdownMenu.Item>
-              <DropdownMenu.Item>
-                <MenuLink href="/exercises/new">Create</MenuLink>
-              </DropdownMenu.Item>
+              <Auth.PERSONAL_TRAINER>
+                <DropdownMenu.Item>
+                  <MenuLink href="/exercises/new">Create</MenuLink>
+                </DropdownMenu.Item>
+              </Auth.PERSONAL_TRAINER>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </li>
@@ -58,7 +60,6 @@ export function NavBar() {
       </ul>
 
       <Auth.USER
-        key={"kiko"}
         fallback={
           <Button variant="surface" asChild>
             <Link href={"/api/auth/signin"}>Sign In</Link>

@@ -1,8 +1,7 @@
-import * as Auth from "@/app/components/Authorize";
 import prisma from "@/prisma/client";
 import { Prisma } from "@prisma/client";
-import { Button, Flex, Heading, Section } from "@radix-ui/themes";
-import Link from "next/link";
+import { Flex, Heading, Section } from "@radix-ui/themes";
+import { CreateWorkoutButton } from "./CreateWorkoutButton";
 import { WorkoutCard } from "./WorkoutCard";
 
 export type PrismaWorkout = Prisma.BlockGetPayload<{
@@ -31,12 +30,7 @@ async function Workouts() {
       {workouts.length === 0 ? (
         <Flex align={"center"} direction={"column"}>
           <Section>
-            <Auth.PERSONAL_TRAINER>
-              <Button asChild>
-                <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
-              </Button>
-            </Auth.PERSONAL_TRAINER>
-
+            <CreateWorkoutButton />
             <p>No workouts found.</p>
           </Section>
         </Flex>
@@ -45,9 +39,7 @@ async function Workouts() {
           <Flex align={"center"} direction={"column"} gap={"3"} asChild>
             <Heading as="h1">
               Workouts
-              <Button asChild>
-                <Link href={"/workouts/new"}>CREATE WORKOUT</Link>
-              </Button>
+              <CreateWorkoutButton />
             </Heading>
           </Flex>
           <Flex direction={"column"} align={"center"} gap={"3"} asChild>
