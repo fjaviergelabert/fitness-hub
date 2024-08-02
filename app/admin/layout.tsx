@@ -1,16 +1,11 @@
-import { auth } from "@/auth";
-import { redirect, RedirectType } from "next/navigation";
+import { withProtectedRoute } from "../components/Authorize/WithProtectedRoute";
 
-export default async function RootLayout({
+async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
-  if (session?.user?.role !== "ADMIN") {
-    return redirect("/api/auth/signin", RedirectType.push);
-  }
-
   return children;
 }
+
+export default withProtectedRoute(["ADMIN"])(RootLayout);

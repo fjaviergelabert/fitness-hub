@@ -76,5 +76,5 @@ const updateRole = async (userId: string, role: UserRole) => {
     data: { role },
     where: { id: userId },
   });
-  revalidatePath("/users");
+  revalidatePath("/admin/users");
 };

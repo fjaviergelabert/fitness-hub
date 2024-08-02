@@ -1,14 +1,11 @@
+import { withProtectedRoute } from "@/app/components/Authorize/WithProtectedRoute";
 import { getWorkout, updateWorkout } from "@/app/workouts/_actions";
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { WorkoutForm } from "../_components/WorkoutForm";
 
-export default async function EditWorkout({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+async function Page({ params: { id } }: { params: { id: string } }) {
   const exercises = await prisma.exercise.findMany();
   const workout = await getWorkout(Number(id));
 
@@ -31,3 +28,5 @@ export default async function EditWorkout({
     </>
   );
 }
+
+export default withProtectedRoute(["ADMIN", "PERSONAL_TRAINER"])(Page);

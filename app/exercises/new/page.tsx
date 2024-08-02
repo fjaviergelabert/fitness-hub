@@ -1,7 +1,8 @@
+import { withProtectedRoute } from "@/app/components/Authorize/WithProtectedRoute";
 import { Heading } from "@radix-ui/themes";
 import { CreateForm } from "../../components/ExerciseForm";
 
-export default async function NewExercise() {
+async function NewExercise() {
   return (
     <>
       <Heading as="h1">Create Exercise</Heading>
@@ -9,3 +10,5 @@ export default async function NewExercise() {
     </>
   );
 }
+
+export default withProtectedRoute(["ADMIN", "PERSONAL_TRAINER"])(NewExercise);
