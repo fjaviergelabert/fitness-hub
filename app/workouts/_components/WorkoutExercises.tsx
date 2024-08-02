@@ -1,5 +1,5 @@
 "use client";
-import { WorkoutExercise } from "@/schemas/exercise";
+import { WorkoutExercise } from "@/schemas";
 import { ExerciseType } from "@prisma/client";
 import { Button, Flex } from "@radix-ui/themes";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";

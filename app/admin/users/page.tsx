@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import prisma from "@/prisma/client";
 import { UserRole } from "@prisma/client";
-import { Button, Flex, Select, Table } from "@radix-ui/themes";
+import { Avatar, Button, Flex, Select, Table } from "@radix-ui/themes";
 import { revalidatePath } from "next/cache";
 
 async function Exercises() {
@@ -35,7 +35,9 @@ async function Exercises() {
       <Table.Body>
         {users.map((user) => (
           <Table.Row key={user.id}>
-            <Table.RowHeaderCell>{user.image}</Table.RowHeaderCell>
+            <Table.RowHeaderCell width={"4rem"}>
+              <Avatar size="3" src={user?.image!} radius="full" fallback="?" />
+            </Table.RowHeaderCell>
             <Table.RowHeaderCell>{user.name}</Table.RowHeaderCell>
             <Table.Cell>{user.email}</Table.Cell>
             <Table.Cell>

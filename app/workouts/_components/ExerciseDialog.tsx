@@ -1,6 +1,6 @@
 "use client";
 import { ExerciseForm } from "@/app/components/ExerciseForm";
-import { exerciseSchema, WorkoutExercise } from "@/schemas/exercise";
+import { exerciseSchema, WorkoutExercise } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";

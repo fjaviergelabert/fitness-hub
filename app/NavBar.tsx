@@ -1,16 +1,15 @@
 "use client";
 import * as Auth from "@/app/components/Authorize";
 import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, forwardRef } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import AppLogo from "./AppLogo";
 
-export function NavBar() {
+export function NavBar({ session }: { session: Session | null }) {
   const path = usePathname();
-  const session = useSession();
   return (
     <nav className="flex space-x-6 border-b-2 h-14 items-center px-4">
       <Link href="/">
@@ -71,13 +70,20 @@ export function NavBar() {
             <Text className="cursor-pointer">
               <Avatar
                 size="3"
-                src={session.data?.user?.image || ""}
+                src={session?.user?.image || ""}
                 radius="full"
                 fallback="?"
               />
             </Text>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content sideOffset={5} align="start">
+            {session?.user.name && (
+              <DropdownMenu.Item disabled>
+                {session?.user.name}
+              </DropdownMenu.Item>
+            )}
+
+            <DropdownMenu.Separator />
             <DropdownMenu.Item>
               <Link className="flex-1" href="/profile">
                 Profile

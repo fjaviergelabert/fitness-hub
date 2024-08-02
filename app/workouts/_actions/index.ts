@@ -1,11 +1,7 @@
 "use server";
 
 import prisma from "@/prisma/client";
-import {
-  updateWorkoutSchema,
-  Workout,
-  workoutSchema,
-} from "@/schemas/exercise";
+import { updateWorkoutSchema, Workout, workoutSchema } from "@/schemas";
 
 export async function getWorkout(id: number) {
   const dbWorkout = await prisma.block.findUnique({

@@ -1,6 +1,6 @@
 "use client";
 import { useFormMutation } from "@/app/hooks/useMutation";
-import { exerciseSchema } from "@/schemas/exercise";
+import { exerciseSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";

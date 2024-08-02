@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/prisma/client";
-import { exerciseSchema, updateExerciseSchema } from "@/schemas/exercise";
+import { exerciseSchema, updateExerciseSchema } from "@/schemas";
 import { Exercise } from "@prisma/client";
 
 export async function deleteExercise(id: number) {

@@ -2,7 +2,7 @@
 import { ExerciseType } from ".prisma/client";
 import AppLogo from "@/app/AppLogo";
 import { Description } from "@/app/components/Description";
-import { WorkoutExercise } from "@/schemas/exercise";
+import { WorkoutExercise } from "@/schemas";
 import { Avatar, Box, Card, Flex, Select, Text } from "@radix-ui/themes";
 import { ReactNode } from "react";
 

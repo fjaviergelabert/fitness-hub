@@ -6,7 +6,7 @@ import {
   getWorkout,
   updateWorkout,
 } from "@/app/workouts/_actions";
-import { Workout } from "@/schemas/exercise";
+import { Workout } from "@/schemas";
 import { Exercise } from "@prisma/client";
 import {
   Box,

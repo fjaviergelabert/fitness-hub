@@ -8,7 +8,7 @@ export const withProtectedRoute =
   (ProtectedComponent: any) => {
     const NewComponent = async (props: React.PropsWithChildren<any>) => {
       const session = await auth();
-      console.log("first", session);
+
       if (!session?.user) {
         return redirect("/api/auth/signin", RedirectType.push);
       }

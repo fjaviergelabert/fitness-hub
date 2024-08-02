@@ -1,6 +1,6 @@
 "use client";
 import { getWorkout } from "@/app/workouts/_actions";
-import { Workout, WorkoutExercise, workoutSchema } from "@/schemas/exercise";
+import { Workout, WorkoutExercise, workoutSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise, ExerciseType } from "@prisma/client";
 import { useForm } from "react-hook-form";

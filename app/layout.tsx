@@ -27,16 +27,15 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <SessionProvider session={session}>
             <Theme appearance="dark" accentColor="red">
-              <main>
-                <Container height={"100vh"} size={{ sm: "2", md: "3" }}>
-                  <NavBar />
-
+              <Container height={"100vh"} size={{ sm: "2", md: "3" }} asChild>
+                <main>
+                  <NavBar session={session} />
                   <Section height={"100%"} px="2">
                     {children}
                   </Section>
                   <ToastContainer />
-                </Container>
-              </main>
+                </main>
+              </Container>
             </Theme>
           </SessionProvider>
         </ReactQueryProvider>
