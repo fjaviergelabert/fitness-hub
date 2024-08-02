@@ -1,8 +1,9 @@
 "use client";
 import { ExerciseType } from ".prisma/client";
+import AppLogo from "@/app/AppLogo";
 import { Description } from "@/app/components/Description";
 import { WorkoutExercise } from "@/schemas/exercise";
-import { Box, Card, Flex, Select, Text } from "@radix-ui/themes";
+import { Avatar, Box, Card, Flex, Select, Text } from "@radix-ui/themes";
 import { ReactNode } from "react";
 
 export function ExerciseCard({
@@ -17,16 +18,24 @@ export function ExerciseCard({
   return (
     <Card className="flex-auto max-w-lg" key={exercise.id}>
       <Flex justify={"between"} direction={"row"} gap="3">
-        <Box>
-          <Text as="p" size="2" weight="bold">
-            {exercise.name}
-          </Text>
-          {exercise.description && (
-            <Box display={{ initial: "none", sm: "block" }} maxWidth={"16em"}>
-              <Description>{exercise.description}</Description>
-            </Box>
-          )}
-        </Box>
+        <Flex gap={"4"}>
+          <Avatar
+            size="3"
+            fallback={<AppLogo />}
+            radius="full"
+            src={exercise.mediaUrl || ""}
+          />
+          <Box>
+            <Text as="p" size="2" weight="bold">
+              {exercise.name}
+            </Text>
+            {exercise.description && (
+              <Box display={{ initial: "none", sm: "block" }} maxWidth={"16em"}>
+                <Description>{exercise.description}</Description>
+              </Box>
+            )}
+          </Box>
+        </Flex>
         <Flex gap="3" align={"center"}>
           <TypeSelect value={exercise.type} onSelect={onSelect} />
           {buttonsSection}
