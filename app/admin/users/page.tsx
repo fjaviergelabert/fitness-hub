@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import prisma from "@/prisma/client";
 import { UserRole } from "@prisma/client";
 import { Avatar, Button, Flex, Select, Table } from "@radix-ui/themes";
-import { revalidatePath } from "next/cache";
+import { updateRole } from "./_actions";
 
 async function Exercises() {
   const session = await auth();
@@ -71,12 +71,3 @@ async function Exercises() {
 }
 
 export default Exercises;
-
-const updateRole = async (userId: string, role: UserRole) => {
-  "use server";
-  await prisma.user.update({
-    data: { role },
-    where: { id: userId },
-  });
-  revalidatePath("/admin/users");
-};
