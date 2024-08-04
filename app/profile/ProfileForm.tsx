@@ -37,8 +37,6 @@ export function ProfileForm({ session }: { session: Session }) {
     profileMutation.mutate(formUser);
   }
 
-  console.log("formState", formState);
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
