@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { CiCircleInfo } from "react-icons/ci";
 import { useFormMutation } from "../hooks/useMutation";
-import { updateUser } from "./page";
+import { updateUser } from "./_actions";
 
 export function ProfileForm({ session }: { session: Session }) {
   const { user } = session;
@@ -19,27 +19,32 @@ export function ProfileForm({ session }: { session: Session }) {
   });
 
   const {
+    reset,
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitted },
+    formState: { errors, isValid, isSubmitted, isSubmitSuccessful, isDirty },
+    formState,
   } = form;
 
   const profileMutation = useFormMutation<any, User>(
     updateUser.bind(null, user.id),
-    "/workouts",
+    "/profile",
     form
   );
 
   function onSubmit(formUser: User) {
+    reset(formUser);
     profileMutation.mutate(formUser);
   }
+
+  console.log("formState", formState);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex-1 flex flex-col gap-3"
     >
-      {isSubmitted && !isValid && (
+      {isSubmitted && !isValid && errors.root?.serverError && (
         <Callout.Root color="crimson">
           <Callout.Icon>
             <CiCircleInfo />
@@ -50,6 +55,14 @@ export function ProfileForm({ session }: { session: Session }) {
             {errors.root?.serverError &&
               `Server Error: ${errors.root?.serverError.message}`}
           </Callout.Text>
+        </Callout.Root>
+      )}
+      {!isDirty && isSubmitSuccessful && isValid && (
+        <Callout.Root color="green">
+          <Callout.Icon>
+            <CiCircleInfo />
+          </Callout.Icon>
+          <Callout.Text>Profile updated.</Callout.Text>
         </Callout.Root>
       )}
       <fieldset className="max-w-sm">
