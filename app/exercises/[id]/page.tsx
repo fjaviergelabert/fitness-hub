@@ -1,6 +1,6 @@
 import { withProtectedRoute } from "@/app/components/Authorize/WithProtectedRoute";
 import prisma from "@/prisma/client";
-import { Heading } from "@radix-ui/themes";
+import { Flex, Heading, Section } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { EditForm } from "../../components/ExerciseForm";
 
@@ -15,8 +15,12 @@ async function EditExercise({ params: { id } }: { params: { id: string } }) {
 
   return (
     <>
-      <Heading as="h1">Edit Exercise</Heading>
-      <EditForm exercise={exercise} />
+      <Flex justify={"center"} asChild>
+        <Heading as="h1">Edit Exercise</Heading>
+      </Flex>
+      <Section>
+        <EditForm exercise={exercise} />
+      </Section>
     </>
   );
 }

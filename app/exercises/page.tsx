@@ -8,7 +8,7 @@ async function Exercises() {
   return exercises.length === 0 ? (
     <>
       <ExercisesHeading />
-      <Flex align={"center"} direction={"column"} asChild>
+      <Flex justify={"center"} asChild>
         <Section>
           <p>No exercises found.</p>
         </Section>

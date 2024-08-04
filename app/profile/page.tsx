@@ -13,7 +13,7 @@ async function ProfilePage() {
   const session = await auth();
   return (
     <>
-      <Flex align={"center"} direction={"column"} asChild>
+      <Flex justify={"center"} asChild>
         <Heading as="h1">Profile</Heading>
       </Flex>
       <Flex asChild>
