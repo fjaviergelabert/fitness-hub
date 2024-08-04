@@ -2,8 +2,8 @@
 
 import { profileSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "@prisma/client";
-import { Button, Callout, Text, TextField } from "@radix-ui/themes";
+import { User, UserRole } from "@prisma/client";
+import { Button, Callout, Select, Text, TextField } from "@radix-ui/themes";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -73,6 +73,19 @@ export function ProfileForm({ session }: { session: Session }) {
           <TextField.Root {...register("image")} />
         </Text>
         {errors.image && <Text color="crimson">{errors.image?.message}</Text>}
+      </fieldset>
+      <fieldset>
+        <Text as="p">Role</Text>
+        <Select.Root defaultValue={UserRole.USER} value={user.role} disabled>
+          <Select.Trigger />
+          <Select.Content>
+            {Object.values(UserRole).map((t) => (
+              <Select.Item key={t} value={t}>
+                {t}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select.Root>
       </fieldset>
       <fieldset>
         <Button
