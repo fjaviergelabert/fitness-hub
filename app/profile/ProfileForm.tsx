@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { CiCircleInfo } from "react-icons/ci";
 import { useFormMutation } from "../hooks/useMutation";
-import { updateUser } from "./_actions";
+import { updateProfile } from "./_actions";
 
 export function ProfileForm({ session }: { session: Session }) {
   const { user } = session;
@@ -27,7 +27,7 @@ export function ProfileForm({ session }: { session: Session }) {
   } = form;
 
   const profileMutation = useFormMutation<any, User>(
-    updateUser.bind(null, user.id),
+    updateProfile,
     "/profile",
     form
   );

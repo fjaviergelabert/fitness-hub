@@ -1,20 +1,14 @@
-import { auth } from "@/auth";
-import prisma from "@/prisma/client";
 import { UserRole } from "@prisma/client";
 import { Avatar, Button, Flex, Select, Table } from "@radix-ui/themes";
-import { updateRole } from "./_actions";
+import { redirect } from "next/navigation";
+import { getUsers, updateRole } from "./_actions";
 
 async function Exercises() {
-  const session = await auth();
-  const sessionUser = session?.user;
+  const users = await getUsers();
 
-  const users = sessionUser
-    ? await prisma.user.findMany({
-        ...(process.env.NODE_ENV !== "development"
-          ? { where: { email: { not: sessionUser.email } } }
-          : {}),
-      })
-    : [];
+  if ("errors" in users) {
+    redirect("/unauthorized");
+  }
 
   return users.length === 0 ? (
     <Flex align={"center"} direction={"column"}>

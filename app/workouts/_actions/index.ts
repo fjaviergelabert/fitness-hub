@@ -1,5 +1,6 @@
 "use server";
 
+import { withPersonalTrainerRole } from "@/app/lib/WithSession";
 import prisma from "@/prisma/client";
 import { updateWorkoutSchema, Workout, workoutSchema } from "@/schemas";
 
@@ -32,7 +33,7 @@ export async function getWorkout(id: number) {
   };
 }
 
-export async function createWorkout(workout: Workout) {
+async function _createWorkout(workout: Workout) {
   const validation = workoutSchema.safeParse(workout);
   if (!validation.success) {
     return {
@@ -100,7 +101,7 @@ export async function createWorkout(workout: Workout) {
   }
 }
 
-export async function updateWorkout(workout: Workout) {
+async function _updateWorkout(workout: Workout) {
   const validation = updateWorkoutSchema.safeParse(workout);
   if (!validation.success) {
     return {
@@ -188,7 +189,7 @@ export async function updateWorkout(workout: Workout) {
   }
 }
 
-export async function cloneWorkout(id: number) {
+async function _cloneWorkout(id: number) {
   const workout = await prisma.block.findUnique({
     where: { id: Number(id) },
     include: {
@@ -239,7 +240,7 @@ export async function cloneWorkout(id: number) {
   return clonedWorkout;
 }
 
-export async function deleteWorkout(id: number) {
+async function _deleteWorkout(id: number) {
   await prisma.$transaction([
     prisma.blockExercise.deleteMany({
       where: { blockId: id },
@@ -249,3 +250,8 @@ export async function deleteWorkout(id: number) {
     }),
   ]);
 }
+
+export const createWorkout = withPersonalTrainerRole(_createWorkout);
+export const updateWorkout = withPersonalTrainerRole(_updateWorkout);
+export const cloneWorkout = withPersonalTrainerRole(_cloneWorkout);
+export const deleteWorkout = withPersonalTrainerRole(_deleteWorkout);
