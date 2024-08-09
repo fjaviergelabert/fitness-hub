@@ -8,28 +8,28 @@ datasource db {
 }
 
 model Exercise {
-  id          Int             @id @default(autoincrement())
-  name        String          @unique @db.VarChar(150)
-  description String?         @db.Text
-  mediaUrl    String?         @db.VarChar(255)
-  blocks      BlockExercise[]
+  id          Int              @id @default(autoincrement())
+  name        String           @unique @db.VarChar(150)
+  description String?          @db.Text
+  mediaUrl    String?          @db.VarChar(255)
+  workouts    WorkoutExercise[]
 }
 
-model Block {
-  id          Int             @id @default(autoincrement())
-  name        String          @unique @db.VarChar(150)
-  description String?         @db.Text
-  exercises   BlockExercise[]
+model Workout {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique @db.VarChar(150)
+  description String?          @db.Text
+  exercises   WorkoutExercise[]
 }
 
-model BlockExercise {
-  id         Int          @id @default(autoincrement())
-  type       ExerciseType @default(NONE)
-  orderId    Int @default(0)
-  exercise   Exercise     @relation(fields: [exerciseId], references: [id])
+model WorkoutExercise {
+  id         Int           @id @default(autoincrement())
+  type       ExerciseType  @default(NONE)
+  orderId    Int           @default(0)
+  exercise   Exercise      @relation(fields: [exerciseId], references: [id])
   exerciseId Int
-  block      Block        @relation(fields: [blockId], references: [id])
-  blockId    Int
+  workout    Workout       @relation(fields: [workoutId], references: [id])
+  workoutId  Int
 }
 
 enum ExerciseType {
@@ -51,7 +51,7 @@ model User {
   Account       Account?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -61,7 +61,7 @@ enum UserRole {
   PERSONAL_TRAINER
   ADMIN
 }
- 
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String  @unique
@@ -77,27 +77,27 @@ model Account {
   session_state            String?
   refresh_token_expires_in Int?
   user                     User?   @relation(fields: [userId], references: [id])
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   @@unique([provider, providerAccountId])
   @@index([userId])
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id])
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   @@index([userId])
 }
- 
+
 model VerificationToken {
   id         String   @id @default(cuid())
   identifier String
@@ -106,7 +106,7 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
- 
+
 // Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
@@ -117,8 +117,8 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([userId, credentialID])
 }

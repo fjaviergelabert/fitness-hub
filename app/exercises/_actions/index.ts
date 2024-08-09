@@ -5,7 +5,7 @@ import { exerciseSchema, updateExerciseSchema } from "@/schemas";
 import { Exercise } from "@prisma/client";
 
 async function _deleteExercise(id: number) {
-  const workouts = await prisma.blockExercise.findMany({
+  const workouts = await prisma.workoutExercise.findMany({
     where: { exerciseId: id },
   });
   if (workouts.length > 0) {
@@ -59,7 +59,7 @@ async function _updateExercise(exercise: Exercise) {
   const isSameName = exercise.name === dbExercise.name;
   if (
     !isSameName &&
-    (await prisma.block.findUnique({ where: { name: exercise.name } }))
+    (await prisma.workout.findUnique({ where: { name: exercise.name } }))
   ) {
     return {
       errors: { name: "Exercise `name` already exists." },

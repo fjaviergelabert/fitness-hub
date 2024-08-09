@@ -4,7 +4,7 @@ import { Flex, Heading, Section } from "@radix-ui/themes";
 import { CreateWorkoutButton } from "./CreateWorkoutButton";
 import { WorkoutCard } from "./WorkoutCard";
 
-export type PrismaWorkout = Prisma.BlockGetPayload<{
+export type PrismaWorkout = Prisma.WorkoutGetPayload<{
   include: {
     exercises: {
       include: {
@@ -15,7 +15,7 @@ export type PrismaWorkout = Prisma.BlockGetPayload<{
 }>;
 
 async function Workouts() {
-  const workouts = await prisma.block.findMany({
+  const workouts = await prisma.workout.findMany({
     include: {
       exercises: {
         include: {

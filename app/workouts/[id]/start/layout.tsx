@@ -8,7 +8,7 @@ const Layout = async ({
   params: { id },
   children,
 }: PropsWithChildren<{ params: { id: string } }>) => {
-  const workout = await prisma.block.findUnique({
+  const workout = await prisma.workout.findUnique({
     where: { id: Number(id) },
     include: {
       exercises: {

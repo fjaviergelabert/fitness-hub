@@ -5,7 +5,7 @@ import prisma from "@/prisma/client";
 import { updateWorkoutSchema, Workout, workoutSchema } from "@/schemas";
 
 export async function getWorkout(id: number) {
-  const dbWorkout = await prisma.block.findUnique({
+  const dbWorkout = await prisma.workout.findUnique({
     where: { id: id },
     include: {
       exercises: {
@@ -41,7 +41,7 @@ async function _createWorkout(workout: Workout) {
     };
   }
 
-  if (await prisma.block.findUnique({ where: { name: workout.name } })) {
+  if (await prisma.workout.findUnique({ where: { name: workout.name } })) {
     return {
       errors: { name: "Workout `name` already exists." },
     };
@@ -63,7 +63,7 @@ async function _createWorkout(workout: Workout) {
   }
 
   try {
-    return await prisma.block.create({
+    return await prisma.workout.create({
       data: {
         name: workout.name,
         description: workout.description,
@@ -109,7 +109,7 @@ async function _updateWorkout(workout: Workout) {
     };
   }
 
-  const dbWorkout = await prisma.block.findUnique({
+  const dbWorkout = await prisma.workout.findUnique({
     where: { id: Number(workout.id) },
   });
   if (!dbWorkout) {
@@ -121,7 +121,7 @@ async function _updateWorkout(workout: Workout) {
   const isSameName = workout.name === dbWorkout.name;
   if (
     !isSameName &&
-    (await prisma.block.findUnique({ where: { name: workout.name } }))
+    (await prisma.workout.findUnique({ where: { name: workout.name } }))
   ) {
     return {
       errors: { name: "Workout `name` already exists." },
@@ -145,10 +145,10 @@ async function _updateWorkout(workout: Workout) {
 
   try {
     const [, t2] = await prisma.$transaction([
-      prisma.blockExercise.deleteMany({
-        where: { blockId: Number(workout.id) },
+      prisma.workoutExercise.deleteMany({
+        where: { workoutId: Number(workout.id) },
       }),
-      prisma.block.update({
+      prisma.workout.update({
         where: { id: Number(workout.id) },
         data: {
           name: workout.name,
@@ -190,7 +190,7 @@ async function _updateWorkout(workout: Workout) {
 }
 
 async function _cloneWorkout(id: number) {
-  const workout = await prisma.block.findUnique({
+  const workout = await prisma.workout.findUnique({
     where: { id: Number(id) },
     include: {
       exercises: {
@@ -205,7 +205,7 @@ async function _cloneWorkout(id: number) {
     return { errors: "Workout not found." };
   }
 
-  const clonedWorkout = await prisma.block.create({
+  const clonedWorkout = await prisma.workout.create({
     data: {
       name: workout.name + " - Copy: " + Date.now(),
       description: workout.description,
@@ -242,10 +242,10 @@ async function _cloneWorkout(id: number) {
 
 async function _deleteWorkout(id: number) {
   await prisma.$transaction([
-    prisma.blockExercise.deleteMany({
-      where: { blockId: id },
+    prisma.workoutExercise.deleteMany({
+      where: { workoutId: id },
     }),
-    prisma.block.delete({
+    prisma.workout.delete({
       where: { id },
     }),
   ]);
