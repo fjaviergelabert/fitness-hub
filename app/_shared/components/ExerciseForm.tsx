@@ -1,5 +1,5 @@
 "use client";
-import { useFormMutation } from "@/app/hooks/useMutation";
+import { useFormMutation } from "@/app/_shared/hooks/useMutation";
 import { exerciseSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { FormProvider, useForm, UseFormReturn } from "react-hook-form";
 import { CiCircleInfo } from "react-icons/ci";
-import { createExercise, updateExercise } from "../exercises/_actions";
+import { createExercise, updateExercise } from "../../exercises/_actions";
 
 export function EditForm(props: { exercise: Exercise }) {
   const form = useForm<Exercise>({

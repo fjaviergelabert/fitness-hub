@@ -1,6 +1,6 @@
-import { withProtectedRoute } from "@/app/components/Authorize/WithProtectedRoute";
+import { withProtectedRoute } from "@/app/_shared/components/Authorize/WithProtectedRoute";
 import { Flex, Heading, Section } from "@radix-ui/themes";
-import { CreateForm } from "../../components/ExerciseForm";
+import { CreateForm } from "../../_shared/components/ExerciseForm";
 
 async function NewExercise() {
   return (

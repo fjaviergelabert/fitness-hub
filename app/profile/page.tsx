@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { Flex, Heading, Section } from "@radix-ui/themes";
-import { withProtectedRoute } from "../components/Authorize/WithProtectedRoute";
+import { withProtectedRoute } from "../_shared/components/Authorize/WithProtectedRoute";
 import { ProfileForm } from "./ProfileForm";
 
 async function ProfilePage() {

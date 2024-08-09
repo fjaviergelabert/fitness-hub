@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@radix-ui/themes";
-import { useToastMutation } from "../hooks/useMutation";
+import { useToastMutation } from "../_shared/hooks/useMutation";
 import { cloneWorkout } from "./_actions";
 
 export function CloneWorkoutButton({ workoutId }: { workoutId: number }) {

@@ -1,6 +1,6 @@
 "use server";
 
-import { withSession } from "@/app/lib/WithSession";
+import { withSession } from "@/app/_shared/lib/WithSession";
 import { auth } from "@/auth";
 import prisma from "@/prisma/client";
 import { profileSchema } from "@/schemas";

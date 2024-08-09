@@ -1,4 +1,4 @@
-import { withProtectedRoute } from "@/app/components/Authorize/WithProtectedRoute";
+import { withProtectedRoute } from "@/app/_shared/components/Authorize/WithProtectedRoute";
 import prisma from "@/prisma/client";
 import { Heading } from "@radix-ui/themes";
 import { createWorkout } from "../_actions";

@@ -1,5 +1,5 @@
 "use client";
-import * as Auth from "@/app/components/Authorize";
+import * as Auth from "@/app/_shared/components/Authorize";
 import { Avatar, Button, DropdownMenu, Text } from "@radix-ui/themes";
 import { Session } from "next-auth";
 import Link from "next/link";

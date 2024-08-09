@@ -1,5 +1,5 @@
 "use client";
-import { ExerciseForm } from "@/app/components/ExerciseForm";
+import { ExerciseForm } from "@/app/_shared/components/ExerciseForm";
 import { exerciseSchema, WorkoutExercise } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";

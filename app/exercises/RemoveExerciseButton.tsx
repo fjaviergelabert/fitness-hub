@@ -1,5 +1,5 @@
 "use client";
-import { useToastMutation } from "../hooks/useMutation";
+import { useToastMutation } from "../_shared/hooks/useMutation";
 import { RemoveButton } from "../workouts/_components/RemoveButton";
 import { deleteExercise } from "./_actions";
 

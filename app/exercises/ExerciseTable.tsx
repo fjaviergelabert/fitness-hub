@@ -1,8 +1,8 @@
-import * as Auth from "@/app/components/Authorize";
+import * as Auth from "@/app/_shared/components/Authorize";
 import { Exercise } from "@prisma/client";
 import { Button, Flex, Table } from "@radix-ui/themes";
 import Link from "next/link";
-import { Description } from "../components/Description";
+import { Description } from "../_shared/components/Description";
 import { RemoveExerciseButton } from "./RemoveExerciseButton";
 
 function ExerciseTable({ exercises }: { exercises: Exercise[] }) {

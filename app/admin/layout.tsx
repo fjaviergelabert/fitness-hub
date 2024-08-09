@@ -1,4 +1,4 @@
-import { withProtectedRoute } from "../components/Authorize/WithProtectedRoute";
+import { withProtectedRoute } from "../_shared/components/Authorize/WithProtectedRoute";
 
 async function RootLayout({
   children,

@@ -1,6 +1,6 @@
 "use server";
 
-import { withAdminRole } from "@/app/lib/WithSession";
+import { withAdminRole } from "@/app/_shared/lib/WithSession";
 import { auth } from "@/auth";
 import prisma from "@/prisma/client";
 import { UserRole } from "@prisma/client";

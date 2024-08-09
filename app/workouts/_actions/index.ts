@@ -1,6 +1,6 @@
 "use server";
 
-import { withPersonalTrainerRole } from "@/app/lib/WithSession";
+import { withPersonalTrainerRole } from "@/app/_shared/lib/WithSession";
 import prisma from "@/prisma/client";
 import { updateWorkoutSchema, Workout, workoutSchema } from "@/schemas";
 

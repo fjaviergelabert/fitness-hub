@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormMutation } from "@/app/hooks/useMutation";
+import { useFormMutation } from "@/app/_shared/hooks/useMutation";
 import {
   createWorkout,
   getWorkout,

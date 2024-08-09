@@ -1,4 +1,4 @@
-import { Description } from "@/app/components/Description";
+import { Description } from "@/app/_shared/components/Description";
 import { getWorkout } from "@/app/workouts/_actions";
 import {
   Avatar,

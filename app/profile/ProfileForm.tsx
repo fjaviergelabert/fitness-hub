@@ -8,7 +8,7 @@ import { Session } from "next-auth";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { CiCircleInfo } from "react-icons/ci";
-import { useFormMutation } from "../hooks/useMutation";
+import { useFormMutation } from "../_shared/hooks/useMutation";
 import { updateProfile } from "./_actions";
 
 export function ProfileForm({ session }: { session: Session }) {

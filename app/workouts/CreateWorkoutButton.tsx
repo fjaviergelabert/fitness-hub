@@ -1,4 +1,4 @@
-import * as Auth from "@/app/components/Authorize";
+import * as Auth from "@/app/_shared/components/Authorize";
 import { Button } from "@radix-ui/themes";
 import Link from "next/link";
 
