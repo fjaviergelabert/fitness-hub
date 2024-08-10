@@ -8,28 +8,32 @@ datasource db {
 }
 
 model Exercise {
-  id          Int              @id @default(autoincrement())
-  name        String           @unique @db.VarChar(150)
-  description String?          @db.Text
-  mediaUrl    String?          @db.VarChar(255)
+  id          Int               @id @default(autoincrement())
+  name        String            @unique @db.VarChar(150)
+  description String?           @db.Text
+  mediaUrl    String?           @db.VarChar(255)
   workouts    WorkoutExercise[]
 }
 
 model Workout {
-  id          Int              @id @default(autoincrement())
-  name        String           @unique @db.VarChar(150)
-  description String?          @db.Text
-  exercises   WorkoutExercise[]
+  id           Int               @id @default(autoincrement())
+  name         String            @unique @db.VarChar(150)
+  description  String?           @db.Text
+  exercises    WorkoutExercise[]
+  user         User              @relation(fields: [userId], references: [id])
+  userId       String
+  userWorkouts UserWorkout[]
 }
 
 model WorkoutExercise {
-  id         Int           @id @default(autoincrement())
-  type       ExerciseType  @default(NONE)
-  orderId    Int           @default(0)
-  exercise   Exercise      @relation(fields: [exerciseId], references: [id])
-  exerciseId Int
-  workout    Workout       @relation(fields: [workoutId], references: [id])
-  workoutId  Int
+  id                  Int                   @id @default(autoincrement())
+  type                ExerciseType          @default(NONE)
+  orderId             Int                   @default(0)
+  exercise            Exercise              @relation(fields: [exerciseId], references: [id])
+  exerciseId          Int
+  workout             Workout               @relation(fields: [workoutId], references: [id])
+  workoutId           Int
+  userWorkoutExercise UserWorkoutExercise[]
 }
 
 enum ExerciseType {
@@ -46,20 +50,44 @@ model User {
   email         String?         @unique
   emailVerified DateTime?
   image         String?
-  role          UserRole @default(USER)
+  role          UserRole        @default(USER)
   Session       Session[]
   Account       Account?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  workout     Workout[]
+  userWorkout UserWorkout[]
 }
 
 enum UserRole {
   USER
   PERSONAL_TRAINER
   ADMIN
+}
+
+model UserWorkout {
+  id        Int                   @id @default(autoincrement())
+  workoutId Int
+  workout   Workout               @relation(fields: [workoutId], references: [id])
+  userId    String
+  user      User                  @relation(fields: [userId], references: [id])
+  exercises UserWorkoutExercise[]
+  date      DateTime              @default(now())
+}
+
+model UserWorkoutExercise {
+  id                Int             @id @default(autoincrement())
+  notes             String?         @db.Text
+  reps              Int             @default(0)
+  weight            Int             @default(0)
+  time              Int             @default(0)
+  workoutExerciseId Int
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id])
+  userWorkoutId     Int
+  userWorkout       UserWorkout     @relation(fields: [userWorkoutId], references: [id])
 }
 
 model Account {
