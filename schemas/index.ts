@@ -1,15 +1,20 @@
 import { ExerciseType } from "@prisma/client";
 import { z } from "zod";
 
-const unsplashUrlPattern = /^https:\/\/[a-zA-Z0-9-]+\.unsplash\.com\/.*$/;
-const unsplashUrlSchema = z.string().url().regex(unsplashUrlPattern, {
-  message: "URL must be part of 'https://XXXX.unsplash.com'",
-});
+const unsplashUrlPattern = /^(https:\/\/[a-zA-Z0-9-]+\.unsplash\.com\/.*)?$/;
+const unsplashUrlSchema = z
+  .string()
+  .url()
+  .regex(unsplashUrlPattern, {
+    message: "URL must be part of 'https://XXXX.unsplash.com'",
+  })
+  .optional()
+  .or(z.literal(""));
 
 const _exerciseSchema = {
   name: z.string().min(3).max(150),
   description: z.string().max(255).optional().nullable(),
-  mediaUrl: unsplashUrlSchema.nullable(),
+  mediaUrl: unsplashUrlSchema,
 };
 
 export const exerciseSchema = z.object(_exerciseSchema);
@@ -53,6 +58,6 @@ export type Workout = z.infer<typeof workoutSchema>;
 export type WorkoutExercise = z.infer<typeof workoutExerciseSchema>;
 
 export const profileSchema = z.object({
-  image: unsplashUrlSchema.nullable(),
-  name: z.string().min(3).max(150).nullable(),
+  image: unsplashUrlSchema,
+  name: z.string().min(3).max(150).optional(),
 });
