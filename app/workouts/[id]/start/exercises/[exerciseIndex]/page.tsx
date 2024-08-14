@@ -4,6 +4,7 @@ import { Box, Button, Flex, Heading, Section } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CompleteWorkoutButton } from "./CompleteWorkoutButton";
 
 type Props = {
   params: { id: string; exerciseIndex: string };
@@ -63,9 +64,7 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
         </Button>
       </Box>
       {index === workout.exercises.length ? (
-        <Button color="grass" asChild>
-          <Link href={`/workouts`}>{"COMPLETE"}</Link>
-        </Button>
+        <CompleteWorkoutButton workout={workout} />
       ) : (
         <Button color="red" variant="soft" asChild>
           <Link href={`/workouts`}>{"SURRENDER"}</Link>

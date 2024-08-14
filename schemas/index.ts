@@ -61,3 +61,22 @@ export const profileSchema = z.object({
   image: unsplashUrlSchema,
   name: z.string().min(3).max(150).optional(),
 });
+
+const userWorkoutExerciseSchema = z.object({
+  id: z.number().int().optional(),
+  notes: z.string().optional(),
+  reps: z.number().int().nonnegative().optional(),
+  weight: z.number().int().nonnegative().optional(),
+  time: z.number().int().nonnegative().optional(),
+  workoutExerciseId: z.number().int(),
+});
+
+export const userWorkoutSchema = z.object({
+  id: z.number().int().optional(),
+  workoutId: z.number().int(),
+  // userId: z.string(),
+  date: z.date().optional(),
+  exercises: z.array(userWorkoutExerciseSchema),
+});
+
+export type UserWorkoutSchema = z.infer<typeof userWorkoutSchema>;
