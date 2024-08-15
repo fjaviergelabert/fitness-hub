@@ -20,14 +20,19 @@ export async function _createUserWorkout(userWorkout: UserWorkoutSchema) {
         workoutId: userWorkout.workoutId,
         userId: session?.user.id!,
         exercises: {
-          create: userWorkout.exercises,
+          create: userWorkout.exercises.map((e) => {
+            return {
+              workoutExerciseId: e.workoutExerciseId,
+              notes: e.notes,
+              reps: e.reps,
+              time: e.time,
+              weight: e.weight,
+            };
+          }),
         },
       },
     });
   } catch (error) {
-    return {
-      errors:
-        "An error has occurred while creating the Workout: Error - " + error,
-    };
+    return "An error has occurred while creating the Workout: Error - " + error;
   }
 }
