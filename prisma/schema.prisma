@@ -39,7 +39,6 @@ model WorkoutExercise {
 enum ExerciseType {
   NONE
   TIMER
-  COUNTDOWN
   MAX_REPS
 }
 
