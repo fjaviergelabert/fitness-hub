@@ -75,7 +75,7 @@ model UserWorkout {
   userId    String
   user      User                  @relation(fields: [userId], references: [id])
   exercises UserWorkoutExercise[]
-  date      DateTime              @default(now())
+  duration  Float                 @default(0)
 }
 
 model UserWorkoutExercise {

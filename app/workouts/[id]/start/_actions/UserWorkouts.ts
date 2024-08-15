@@ -19,6 +19,7 @@ export async function _createUserWorkout(userWorkout: UserWorkoutSchema) {
       data: {
         workoutId: userWorkout.workoutId,
         userId: session?.user.id!,
+        duration: userWorkout.duration,
         exercises: {
           create: userWorkout.exercises.map((e) => {
             return {

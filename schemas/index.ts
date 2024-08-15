@@ -75,7 +75,7 @@ export const userWorkoutSchema = z.object({
   id: z.number().int().optional(),
   workoutId: z.number().int(),
   // userId: z.string(),
-  date: z.date().optional(),
+  duration: z.number(),
   exercises: z.array(userWorkoutExerciseSchema),
 });
 
