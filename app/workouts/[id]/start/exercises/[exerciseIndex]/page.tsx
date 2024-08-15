@@ -1,5 +1,6 @@
 import { getWorkout } from "@/app/workouts/_actions";
 import { ExerciseHoverCard } from "@/app/workouts/_components/ExerciseHoverCard";
+import { Exercise } from "@prisma/client";
 import { Box, Button, Flex, Heading, Section } from "@radix-ui/themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,7 @@ type Props = {
   params: { id: string; exerciseIndex: string };
 };
 
-const Page = async ({ params: { id, exerciseIndex } }: Props) => {
+async function Page({ params: { id, exerciseIndex } }: Props) {
   const index = Number(exerciseIndex);
   const workout = await getWorkout(Number(id));
 
@@ -22,47 +23,8 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
 
   return (
     <Flex direction={"column"} gap={"5"} align={"center"}>
-      <Flex direction={"column"} gap={"6"} align={"center"} asChild>
-        <Section>
-          <ExerciseHoverCard exercise={exercise}>
-            <Heading className="hover:text-red-500 cursor-help" color="gray">
-              {exercise.name}
-            </Heading>
-          </ExerciseHoverCard>
-          {exercise.mediaUrl ? (
-            <Image
-              src={exercise.mediaUrl}
-              width={200}
-              height={200}
-              alt="Picture of the author"
-            />
-          ) : (
-            exercise.description
-          )}
-        </Section>
-      </Flex>
-      <Box>
-        <Button disabled={index === 1}>
-          <Link
-            href={`${index - 1}`}
-            className={index === 1 ? "pointer-events-none" : ""}
-            aria-disabled={index === 1}
-          >
-            {"<"}
-          </Link>
-        </Button>
-        <Button disabled={index === workout.exercises.length}>
-          <Link
-            href={`${index + 1}`}
-            className={
-              index === workout.exercises.length ? "pointer-events-none" : ""
-            }
-            aria-disabled={index === workout.exercises.length}
-          >
-            {">"}
-          </Link>
-        </Button>
-      </Box>
+      <ExerciseSection exercise={exercise} />
+      <NavigationButtons index={index} workout={workout} />
       {index === workout.exercises.length ? (
         <CompleteWorkoutButton workout={workout} />
       ) : (
@@ -72,6 +34,63 @@ const Page = async ({ params: { id, exerciseIndex } }: Props) => {
       )}
     </Flex>
   );
-};
+}
 
 export default Page;
+
+function NavigationButtons({
+  index,
+  workout,
+}: {
+  index: number;
+  workout: NonNullable<Awaited<ReturnType<typeof getWorkout>>>;
+}) {
+  return (
+    <Box>
+      <Button disabled={index === 1}>
+        <Link
+          href={`${index - 1}`}
+          className={index === 1 ? "pointer-events-none" : ""}
+          aria-disabled={index === 1}
+        >
+          {"<"}
+        </Link>
+      </Button>
+      <Button disabled={index === workout.exercises.length}>
+        <Link
+          href={`${index + 1}`}
+          className={
+            index === workout.exercises.length ? "pointer-events-none" : ""
+          }
+          aria-disabled={index === workout.exercises.length}
+        >
+          {">"}
+        </Link>
+      </Button>
+    </Box>
+  );
+}
+
+function ExerciseSection({ exercise }: { exercise: Exercise }) {
+  return (
+    <Flex direction={"column"} gap={"6"} align={"center"} asChild>
+      <Section>
+        <ExerciseHoverCard exercise={exercise}>
+          <Heading className="hover:text-red-500 cursor-help" color="gray">
+            {exercise.name}
+          </Heading>
+        </ExerciseHoverCard>
+        {exercise.mediaUrl ? (
+          <Image
+            src={exercise.mediaUrl}
+            width={200}
+            height={200}
+            alt="Picture of the author"
+          />
+        ) : (
+          exercise.description
+        )}
+      </Section>
+    </Flex>
+  );
+}
