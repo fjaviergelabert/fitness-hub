@@ -19,6 +19,7 @@ export function CompleteWorkoutButton({
   function createWorkout() {
     mutation.mutate({
       workoutId: workout?.id!,
+      duration: 0,
       exercises: workout?.exercises.map((e) => {
         return {
           notes: "",

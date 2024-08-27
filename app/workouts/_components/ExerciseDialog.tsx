@@ -1,6 +1,6 @@
 "use client";
 import { ExerciseForm } from "@/app/_shared/components/ExerciseForm";
-import { exerciseSchema, WorkoutExercise } from "@/schemas";
+import { exerciseSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Exercise } from "@prisma/client";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
@@ -15,7 +15,7 @@ import {
 export const ExerciseDialog = ({
   onSubmit,
 }: {
-  onSubmit: (exercise: WorkoutExercise) => void;
+  onSubmit: (exercise: Exercise) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const form = useForm<Exercise>({
@@ -28,8 +28,8 @@ export const ExerciseDialog = ({
     },
   });
 
-  const submit = (exercise: FieldValues) => {
-    onSubmit(exercise as WorkoutExercise);
+  const submit = (values: FieldValues) => {
+    onSubmit(values as Exercise);
     setOpen(false);
   };
 

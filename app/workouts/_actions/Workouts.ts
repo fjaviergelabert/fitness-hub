@@ -29,6 +29,8 @@ export async function _getWorkout(id: number) {
       type: e.type,
       orderId: e.orderId,
       ...e.exercise,
+      exerciseId: e.exercise.id,
+      id: e.id,
     })),
   };
 }
@@ -49,7 +51,11 @@ export async function _createWorkout(workout: Workout) {
 
   const duplicatedExercises = await prisma.exercise.findMany({
     where: {
-      name: { in: workout.exercises.filter((e) => !e?.id).map((e) => e.name) },
+      name: {
+        in: workout.exercises
+          .filter((e) => !e.id && e?.id! > 0)
+          .map((e) => e.name),
+      },
     },
   });
   if (duplicatedExercises.length > 0) {
@@ -65,7 +71,16 @@ export async function _createWorkout(workout: Workout) {
   const session = await auth();
 
   try {
-    return await prisma.workout.create({
+    const newExercisesCreation = prisma.exercise.createMany({
+      data: workout.exercises.map((e) => ({
+        name: e.name,
+        description: e.description,
+        mediaUrl: e.mediaUrl,
+      })),
+      skipDuplicates: true,
+    });
+
+    const updateWorkout = prisma.workout.create({
       data: {
         name: workout.name,
         description: workout.description,
@@ -79,28 +94,16 @@ export async function _createWorkout(workout: Workout) {
             type: exercise.type,
             orderId: exercise.orderId,
             exercise: {
-              connectOrCreate: {
-                create: {
-                  name: exercise.name,
-                  description: exercise.description,
-                  mediaUrl: exercise.mediaUrl,
-                },
-                where: {
-                  id: (exercise?.id as number) || 0,
-                },
+              connect: {
+                name: exercise.name,
               },
             },
           })),
         },
       },
-      include: {
-        exercises: {
-          include: {
-            exercise: true,
-          },
-        },
-      },
     });
+
+    await prisma.$transaction([newExercisesCreation, updateWorkout]);
   } catch (error) {
     throw new Error(
       "An error has occurred while creating the Workout: Error - " + error
@@ -137,7 +140,11 @@ export async function _updateWorkout(workout: Workout) {
 
   const duplicatedExercises = await prisma.exercise.findMany({
     where: {
-      name: { in: workout.exercises.filter((e) => !e?.id).map((e) => e.name) },
+      name: {
+        in: workout.exercises
+          .filter((e) => !e.id && e?.id! > 0)
+          .map((e) => e.name),
+      },
     },
   });
   if (duplicatedExercises.length > 0) {
@@ -151,47 +158,66 @@ export async function _updateWorkout(workout: Workout) {
   }
 
   try {
-    const [, t2] = await prisma.$transaction([
-      prisma.workoutExercise.deleteMany({
-        where: { workoutId: Number(workout.id) },
-      }),
-      prisma.workout.update({
-        where: { id: Number(workout.id) },
-        data: {
-          name: workout.name,
-          description: workout.description,
-          exercises: {
-            create: workout.exercises.map((exercise) => ({
-              type: exercise.type,
-              orderId: exercise.orderId,
+    const newExercisesCreation = prisma.exercise.createMany({
+      data: workout.exercises.map((e) => ({
+        name: e.name,
+        description: e.description,
+        mediaUrl: e.mediaUrl,
+      })),
+      skipDuplicates: true,
+    });
+
+    const deleteUnusedExercises = prisma.workoutExercise.deleteMany({
+      where: {
+        workoutId: workout.id,
+        id: {
+          notIn: workout.exercises.map((e) => e.id!),
+        },
+      },
+    });
+
+    const updateWorkout = prisma.workout.update({
+      where: { id: Number(workout.id) },
+      data: {
+        name: workout.name,
+        description: workout.description,
+        exercises: {
+          upsert: workout.exercises.map((e) => ({
+            create: {
+              type: e.type,
+              orderId: e.orderId,
               exercise: {
-                connectOrCreate: {
-                  create: {
-                    name: exercise.name,
-                    description: exercise.description,
-                    mediaUrl: exercise.mediaUrl,
-                  },
-                  where: {
-                    id: (exercise?.id as number) || 0,
-                  },
+                connect: {
+                  name: e.name,
                 },
               },
-            })),
-          },
-        },
-        include: {
-          exercises: {
-            include: {
-              exercise: true,
             },
-          },
+            update: {
+              type: e.type,
+              orderId: e.orderId,
+              exercise: {
+                connect: {
+                  name: e.name,
+                },
+              },
+            },
+            where: {
+              id: e.id!,
+            },
+          })),
         },
-      }),
+      },
+    });
+
+    await prisma.$transaction([
+      newExercisesCreation,
+      deleteUnusedExercises,
+      updateWorkout,
     ]);
-    return t2;
   } catch (error) {
+    // TODO: Transform error correctly
     throw new Error(
-      "An error has occurred while updating the Workout: Error - " + error
+      "An error has occurred while updating the Workout: " + error
     );
   }
 }

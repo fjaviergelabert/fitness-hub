@@ -27,6 +27,7 @@ export const workoutExerciseSchema = exerciseSchema.extend({
   id: z.number().optional().nullable(),
   type: z.nativeEnum(ExerciseType),
   orderId: z.number(),
+  exerciseId: z.number().optional().nullable(),
 });
 
 const _workoutSchema = {

@@ -19,12 +19,18 @@ export function useWorkoutForm(
   const { setValue, getValues } = form;
   const workoutExercises = getValues("exercises");
 
-  const addExercise = (exercise: WorkoutExercise | Exercise) =>
+  const addExercise = (exercise: Exercise) =>
     setValue(
       "exercises",
       [
         ...workoutExercises,
-        { ...exercise, orderId: workoutExercises.length + 1, type: "NONE" },
+        {
+          ...exercise,
+          orderId: workoutExercises.length + 1,
+          type: "NONE",
+          exerciseId: exercise.id,
+          id: 0,
+        },
       ],
       {
         shouldValidate: true,
