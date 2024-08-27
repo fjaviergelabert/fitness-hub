@@ -1,7 +1,7 @@
 import * as Auth from "@/app/_shared/components/Authorize";
-import { Box, Button, Card, Flex, Text } from "@radix-ui/themes";
+import { Box, Button, Card, Flex } from "@radix-ui/themes";
 import Link from "next/link";
-import { Description } from "../_shared/components/Description";
+import { TruncatedText } from "../_shared/components/TruncatedText";
 import { CloneWorkoutButton } from "./CloneWorkoutButton";
 import { PrismaWorkout } from "./page";
 import { RemoveWorkoutButton } from "./RemoveWorkoutButton";
@@ -12,11 +12,9 @@ export function WorkoutCard({ workout }: { workout: PrismaWorkout }) {
       <Card size={"3"}>
         <Flex direction={"row"} align={"center"} justify={"between"} gap={"2"}>
           <Link className="min-w-0" href={`/workouts/${workout.id}/overview`}>
-            <Text className="pointer-events-auto" as="p" size="2" weight="bold">
-              {workout.name}
-            </Text>
+            <TruncatedText weight="bold">{workout.name}</TruncatedText>
             {workout.description && (
-              <Description>{workout.description}</Description>
+              <TruncatedText>{workout.description}</TruncatedText>
             )}
           </Link>
           <Auth.PERSONAL_TRAINER>

@@ -2,7 +2,7 @@ import * as Auth from "@/app/_shared/components/Authorize";
 import { Exercise } from "@prisma/client";
 import { Button, Flex, Table } from "@radix-ui/themes";
 import Link from "next/link";
-import { Description } from "../_shared/components/Description";
+import { TruncatedText } from "../_shared/components/TruncatedText";
 import { RemoveExerciseButton } from "./RemoveExerciseButton";
 
 function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
@@ -25,7 +25,7 @@ function ExerciseTable({ exercises }: { exercises: Exercise[] }) {
               {exercise.name}
             </Table.RowHeaderCell>
             <Table.Cell className="hidden sm:table-cell max-w-md">
-              <Description>{exercise.description}</Description>
+              <TruncatedText>{exercise.description}</TruncatedText>
             </Table.Cell>
             <Auth.PERSONAL_TRAINER>
               <Table.Cell align="right">

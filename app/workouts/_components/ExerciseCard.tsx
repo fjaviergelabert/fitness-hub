@@ -1,7 +1,7 @@
 "use client";
 import { ExerciseType } from ".prisma/client";
 import AppLogo from "@/app/AppLogo";
-import { Description } from "@/app/_shared/components/Description";
+import { TruncatedText } from "@/app/_shared/components/TruncatedText";
 import { WorkoutExercise } from "@/schemas";
 import { Avatar, Box, Card, Flex, Select, Text } from "@radix-ui/themes";
 import { ReactNode } from "react";
@@ -31,7 +31,7 @@ export function ExerciseCard({
             </Text>
             {exercise.description && (
               <Box display={{ initial: "none", sm: "block" }} maxWidth={"16em"}>
-                <Description>{exercise.description}</Description>
+                <TruncatedText>{exercise.description}</TruncatedText>
               </Box>
             )}
           </Box>

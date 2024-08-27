@@ -1,4 +1,4 @@
-import { Description } from "@/app/_shared/components/Description";
+import { TruncatedText } from "@/app/_shared/components/TruncatedText";
 import { getWorkout } from "@/app/workouts/_actions";
 import {
   Avatar,
@@ -36,7 +36,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
         <Flex direction={"column"} width={{ sm: "70vh", lg: "100vh" }} asChild>
           <Section display={{ initial: "none", xs: "none", sm: "initial" }}>
             <Separator my="3" size="4" />
-            <Description>{workout.description}</Description>
+            <TruncatedText>{workout.description}</TruncatedText>
             <Separator my="3" size="4" />
           </Section>
         </Flex>
