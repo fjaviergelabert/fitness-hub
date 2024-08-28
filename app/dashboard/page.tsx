@@ -1,6 +1,15 @@
 import { auth } from "@/auth";
 import prisma from "@/prisma/client";
-import { Box, Flex, Grid, Heading, Section } from "@radix-ui/themes";
+import {
+  Box,
+  Card,
+  Flex,
+  Grid,
+  Heading,
+  Link,
+  Section,
+} from "@radix-ui/themes";
+import { TruncatedText } from "../_shared/components/TruncatedText";
 
 export default async function Dashboard() {
   const session = await auth();
@@ -31,24 +40,67 @@ export default async function Dashboard() {
             <Flex justify={"center"} asChild>
               <Heading size={"4"}>Workouts done</Heading>
             </Flex>
-
-            {completedUserWorkouts.map((completedWorkout) => (
-              <Box key={completedWorkout.id}>
-                <p>{completedWorkout.workout.name}</p>
-                <p>{completedWorkout.user.name}</p>
-              </Box>
-            ))}
+            <Flex direction={"column"} align={"center"}>
+              {completedUserWorkouts.map(({ workout, id }) => (
+                <Box key={id} className="hover:bg-orange-950 w-2/3" asChild>
+                  <Card size={"3"}>
+                    <Flex
+                      direction={"row"}
+                      align={"center"}
+                      justify={"between"}
+                      gap={"2"}
+                    >
+                      <Link
+                        className="min-w-0"
+                        href={`/workouts/${workout.id}/overview`}
+                      >
+                        <TruncatedText weight="bold">
+                          {workout.name}
+                        </TruncatedText>
+                        {workout.description && (
+                          <TruncatedText>{workout.description}</TruncatedText>
+                        )}
+                      </Link>
+                    </Flex>
+                  </Card>
+                </Box>
+              ))}
+            </Flex>
           </Box>
           <Box height="64px">
             <Flex justify={"center"} asChild>
               <Heading size={"4"}>Created by you</Heading>
             </Flex>
-            {createdUserWorkouts.map((workout) => (
-              <Box key={workout.id}>
-                <p>{workout.name}</p>
-                <p>{workout.user.name}</p>
-              </Box>
-            ))}
+            <Flex direction={"column"} align={"center"}>
+              {createdUserWorkouts.map((workout) => (
+                <Box
+                  key={workout.id}
+                  className="hover:bg-orange-950 w-2/3"
+                  asChild
+                >
+                  <Card size={"3"}>
+                    <Flex
+                      direction={"row"}
+                      align={"center"}
+                      justify={"between"}
+                      gap={"2"}
+                    >
+                      <Link
+                        className="min-w-0"
+                        href={`/workouts/${workout.id}/overview`}
+                      >
+                        <TruncatedText weight="bold">
+                          {workout.name}
+                        </TruncatedText>
+                        {workout.description && (
+                          <TruncatedText>{workout.description}</TruncatedText>
+                        )}
+                      </Link>
+                    </Flex>
+                  </Card>
+                </Box>
+              ))}
+            </Flex>
           </Box>
         </Grid>
       </Section>

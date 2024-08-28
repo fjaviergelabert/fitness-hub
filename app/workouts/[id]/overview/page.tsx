@@ -66,9 +66,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
                     <Text as="p" size="2" weight="bold">
                       {e.name}
                     </Text>
-                    <Text color="gray" as="p" size={"1"} truncate>
-                      {e.description}
-                    </Text>
+                    <TruncatedText>{e.description}</TruncatedText>
                   </Flex>
                 </Flex>
               </Card>
