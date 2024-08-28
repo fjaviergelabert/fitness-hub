@@ -12,7 +12,7 @@ export function NavBar({ session }: { session: Session | null }) {
   const path = usePathname();
   return (
     <nav className="flex space-x-6 border-b-2 h-14 items-center px-4">
-      <Link href="/">
+      <Link href={`${session?.user ? "/dashboard" : "/"}`}>
         <AppLogo />
       </Link>
       <ul className="flex space-x-2 flex-grow">
