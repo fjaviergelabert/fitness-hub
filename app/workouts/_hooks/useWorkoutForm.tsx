@@ -10,12 +10,17 @@ export function useWorkoutForm(
 ) {
   const form = useForm<Workout>({
     resolver: zodResolver(workoutSchema),
-    defaultValues: workout || {
-      name: "",
-      description: "",
-      exercises: [],
-    },
+    defaultValues: workout
+      ? {
+          ...workout,
+          exercises: workout.exercises.map((exercise) => ({
+            ...exercise,
+            mediaUrl: exercise.mediaUrl!,
+          })),
+        }
+      : { name: "", description: "", exercises: [] },
   });
+
   const { setValue, getValues } = form;
   const workoutExercises = getValues("exercises");
 
@@ -30,6 +35,7 @@ export function useWorkoutForm(
           type: "NONE",
           exerciseId: exercise.id,
           id: 0,
+          mediaUrl: exercise.mediaUrl!,
         },
       ],
       {
